@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工作 Dashboard - 排版設計圖</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0,0,0,0.15);
+        }
+
+        /* 不同區塊的底色 */
+        .section.weekly {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            grid-column: 1 / -1; /* 占據整行 */
+        }
+
+        .section.others {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        }
+
+        .section.private {
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+        }
+
+        .section.focus {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .add-btn {
+            background: rgba(255,255,255,0.8);
+            border: 2px solid rgba(0,0,0,0.2);
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .add-btn:hover {
+            background: white;
+            transform: rotate(90deg);
+        }
+
+        /* 當周待辦的特殊佈局 */
+        .weekly-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+        }
+
+        .day-column {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            min-height: 200px;
+        }
+
+        .day-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 12px;
+            text-align: center;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        /* 待辦事項樣式 */
+        .todo-item {
+            background: white;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            cursor: move;
+            transition: all 0.2s;
+        }
+
+        .todo-item:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .todo-item.important {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+        }
+
+        .drag-handle {
+            color: #999;
+            font-size: 1.2rem;
+        }
+
+        .todo-text {
+            flex: 1;
+            color: #333;
+            font-size: 0.95rem;
+        }
+
+        .todo-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .action-btn {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+
+        .red-dot {
+            background: #9e9e9e;
+            color: white;
+        }
+
+        .red-dot:hover {
+            background: #757575;
+            transform: scale(1.1);
+        }
+
+        .add-note {
+            background: #9e9e9e;
+            color: white;
+        }
+
+        .add-note:hover {
+            background: #757575;
+            transform: scale(1.1);
+        }
+
+        .delete-btn {
+            background: #9e9e9e;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #757575;
+            transform: scale(1.1);
+        }
+
+        .note-text {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #e0e0e0;
+            font-style: italic;
+        }
+
+        /* 響應式設計 */
+        @media (max-width: 1024px) {
+            .weekly-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .weekly-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .weekly-grid {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 10px;
+            }
+
+            .section {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📊 工作 Dashboard 設計圖</h1>
+        </div>
+
+        <div class="dashboard-grid">
+            <!-- 區塊 1: 當周待辦 -->
+            <div class="section weekly">
+                <div class="section-header">
+                    <h2 class="section-title">📅 當周待辦</h2>
+                    <button class="add-btn">+</button>
+                </div>
+                <div class="weekly-grid">
+                    <div class="day-column">
+                        <div class="day-title">週一</div>
+                        <div class="todo-item">
+                            <span class="drag-handle">⋮⋮</span>
+                            <div class="todo-text">完成專案報告</div>
+                            <div class="todo-actions">
+                                <button class="action-btn red-dot">!</button>
+                                <button class="action-btn add-note">+</button>
+                                <button class="action-btn delete-btn">×</button>
+                            </div>
+                        </div>
+                        <div class="todo-item important">
+                            <span class="drag-handle">⋮⋮</span>
+                            <div>
+                                <div class="todo-text">團隊會議</div>
+                                <div class="note-text">📝 需準備簡報資料</div>
+                            </div>
+                            <div class="todo-actions">
+                                <button class="action-btn red-dot">!</button>
+                                <button class="action-btn add-note">+</button>
+                                <button class="action-btn delete-btn">×</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="day-column">
+                        <div class="day-title">週二</div>
+                        <div class="todo-item">
+                            <span class="drag-handle">⋮⋮</span>
+                            <div class="todo-text">客戶電話會議</div>
+                            <div class="todo-actions">
+                                <button class="action-btn red-dot">!</button>
+                                <button class="action-btn add-note">+</button>
+                                <button class="action-btn delete-btn">×</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="day-column">
+                        <div class="day-title">週三</div>
+                        <div class="todo-item">
+                            <span class="drag-handle">⋮⋮</span>
+                            <div class="todo-text">檢視進度</div>
+                            <div class="todo-actions">
+                                <button class="action-btn red-dot">!</button>
+                                <button class="action-btn add-note">+</button>
+                                <button class="action-btn delete-btn">×</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="day-column">
+                        <div class="day-title">週四</div>
+                    </div>
+                    <div class="day-column">
+                        <div class="day-title">週五</div>
+                        <div class="todo-item">
+                            <span class="drag-handle">⋮⋮</span>
+                            <div class="todo-text">週報整理</div>
+                            <div class="todo-actions">
+                                <button class="action-btn red-dot">!</button>
+                                <button class="action-btn add-note">+</button>
+                                <button class="action-btn delete-btn">×</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 區塊 2: 其他待辦 -->
+            <div class="section others">
+                <div class="section-header">
+                    <h2 class="section-title">📋 其他待辦</h2>
+                    <button class="add-btn">+</button>
+                </div>
+                <div class="todo-item">
+                    <span class="drag-handle">⋮⋮</span>
+                    <div class="todo-text">更新文件資料</div>
+                    <div class="todo-actions">
+                        <button class="action-btn red-dot">●</button>
+                        <button class="action-btn add-note">+</button>
+                        <button class="action-btn delete-btn">×</button>
+                    </div>
+                </div>
+                <div class="todo-item">
+                    <span class="drag-handle">⋮⋮</span>
+                    <div class="todo-text">回覆郵件</div>
+                    <div class="todo-actions">
+                        <button class="action-btn red-dot">●</button>
+                        <button class="action-btn add-note">+</button>
+                        <button class="action-btn delete-btn">×</button>
+                    </div>
+                </div>
+                <div class="todo-item">
+                    <span class="drag-handle">⋮⋮</span>
+                    <div class="todo-text">準備提案內容</div>
+                    <div class="todo-actions">
+                        <button class="action-btn red-dot">●</button>
+                        <button class="action-btn add-note">+</button>
+                        <button class="action-btn delete-btn">×</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 區塊 3: 私人待辦 -->
+            <div class="section private">
+                <div class="section-header">
+                    <h2 class="section-title">👤 私人待辦</h2>
+                    <button class="add-btn">+</button>
+                </div>
+                <div class="todo-item important">
+                    <span class="drag-handle">⋮⋮</span>
+                    <div class="todo-text">預約醫生</div>
+                    <div class="todo-actions">
+                        <button class="action-btn red-dot">●</button>
+                        <button class="action-btn add-note">+</button>
+                        <button class="action-btn delete-btn">×</button>
+                    </div>
+                </div>
+                <div class="todo-item">
+                    <span class="drag-handle">⋮⋮</span>
+                    <div class="todo-text">繳交帳單</div>
+                    <div class="todo-actions">
+                        <button class="action-btn red-dot">●</button>
+                        <button class="action-btn add-note">+</button>
+                        <button class="action-btn delete-btn">×</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 區塊 4: 近期關注 -->
+            <div class="section focus">
+                <div class="section-header">
+                    <h2 class="section-title">👁️ 近期關注</h2>
+                    <button class="add-btn">+</button>
+                </div>
+                <div class="todo-item">
+                    <span class="drag-handle">⋮⋮</span>
+                    <div>
+                        <div class="todo-text">新技術學習</div>
+                        <div class="note-text">📝 React 19 新功能研究</div>
+                    </div>
+                    <div class="todo-actions">
+                        <button class="action-btn red-dot">●</button>
+                        <button class="action-btn add-note">+</button>
+                        <button class="action-btn delete-btn">×</button>
+                    </div>
+                </div>
+                <div class="todo-item">
+                    <span class="drag-handle">⋮⋮</span>
+                    <div class="todo-text">競品分析</div>
+                    <div class="todo-actions">
+                        <button class="action-btn red-dot">●</button>
+                        <button class="action-btn add-note">+</button>
+                        <button class="action-btn delete-btn">×</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

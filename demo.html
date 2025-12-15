@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工作 Dashboard - 示範版本</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Microsoft JhengHei", sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            flex: 1;
+        }
+
+        .demo-badge {
+            background: rgba(255, 193, 7, 0.9);
+            color: #333;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: transform 0.2s;
+        }
+
+        .section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0,0,0,0.15);
+        }
+
+        .section.weekly {
+            background: linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%);
+            grid-column: 1 / -1;
+        }
+
+        .section.others {
+            background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+        }
+
+        .section.private {
+            background: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+        }
+
+        .section.focus {
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+        }
+
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 3px solid rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .add-btn {
+            background: rgba(255,255,255,0.8);
+            border: 2px solid rgba(0,0,0,0.2);
+            border-radius: 50%;
+            width: 35px;
+            height: 35px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .add-btn:hover {
+            background: white;
+            transform: rotate(90deg);
+        }
+
+        .weekly-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+        }
+
+        .day-column {
+            background: white;
+            border-radius: 8px;
+            padding: 15px;
+            min-height: 200px;
+        }
+
+        .day-column.drag-over {
+            background: #f0f0f0;
+            border: 2px dashed #667eea;
+        }
+
+        .day-title {
+            font-weight: bold;
+            font-size: 1.1rem;
+            color: #333;
+            margin-bottom: 12px;
+            text-align: center;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e0e0e0;
+        }
+
+        .todo-item {
+            background: white;
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+            cursor: move;
+            transition: all 0.2s;
+        }
+
+        .todo-item:hover {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .todo-item.important {
+            background: #ffebee;
+            border-left: 4px solid #f44336;
+        }
+
+        .todo-item.dragging {
+            opacity: 0.5;
+        }
+
+        .drag-handle {
+            color: #999;
+            font-size: 1.2rem;
+            cursor: grab;
+        }
+
+        .drag-handle:active {
+            cursor: grabbing;
+        }
+
+        .todo-content {
+            flex: 1;
+        }
+
+        .todo-text {
+            color: #333;
+            font-size: 0.95rem;
+            word-break: break-word;
+        }
+
+        .note-text {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 8px;
+            padding-top: 8px;
+            border-top: 1px solid #e0e0e0;
+            font-style: italic;
+        }
+
+        .todo-actions {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .action-btn {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+            background: #9e9e9e;
+            color: white;
+        }
+
+        .action-btn:hover {
+            background: #757575;
+            transform: scale(1.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .modal-content h3 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .modal-content input,
+        .modal-content textarea,
+        .modal-content select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1rem;
+            margin-bottom: 15px;
+            font-family: inherit;
+        }
+
+        .modal-content textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .modal-content input:focus,
+        .modal-content textarea:focus,
+        .modal-content select:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .modal-btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .modal-btn.primary {
+            background: #667eea;
+            color: white;
+        }
+
+        .modal-btn.primary:hover {
+            background: #5568d3;
+        }
+
+        .modal-btn.secondary {
+            background: #e0e0e0;
+            color: #333;
+        }
+
+        .modal-btn.secondary:hover {
+            background: #d0d0d0;
+        }
+
+        .info-banner {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border-left: 5px solid #ff9800;
+        }
+
+        .info-banner h3 {
+            color: #ff9800;
+            margin-bottom: 10px;
+        }
+
+        .info-banner p {
+            color: #666;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 1024px) {
+            .weekly-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .weekly-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .header h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .weekly-grid {
+                grid-template-columns: 1fr;
+            }
+
+            body {
+                padding: 10px;
+            }
+
+            .section {
+                padding: 15px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard-container">
+        <div class="header">
+            <div></div>
+            <h1>📊 工作 Dashboard</h1>
+            <div class="demo-badge">示範版本</div>
+        </div>
+
+        <div class="info-banner">
+            <h3>⚠️ 這是示範版本</h3>
+            <p>此版本使用本地儲存，資料僅保存在當前瀏覽器中。如需雲端同步功能，請參考 SETUP.md 設置 Firebase。</p>
+        </div>
+
+        <div class="dashboard-grid">
+            <div class="section weekly">
+                <div class="section-header">
+                    <h2 class="section-title">📅 當周待辦</h2>
+                    <button class="add-btn" onclick="showAddModal('weekly')">+</button>
+                </div>
+                <div class="weekly-grid">
+                    <div class="day-column" data-day="monday">
+                        <div class="day-title">週一</div>
+                        <div class="todo-list" id="monday"></div>
+                    </div>
+                    <div class="day-column" data-day="tuesday">
+                        <div class="day-title">週二</div>
+                        <div class="todo-list" id="tuesday"></div>
+                    </div>
+                    <div class="day-column" data-day="wednesday">
+                        <div class="day-title">週三</div>
+                        <div class="todo-list" id="wednesday"></div>
+                    </div>
+                    <div class="day-column" data-day="thursday">
+                        <div class="day-title">週四</div>
+                        <div class="todo-list" id="thursday"></div>
+                    </div>
+                    <div class="day-column" data-day="friday">
+                        <div class="day-title">週五</div>
+                        <div class="todo-list" id="friday"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section others">
+                <div class="section-header">
+                    <h2 class="section-title">📋 其他待辦</h2>
+                    <button class="add-btn" onclick="showAddModal('others')">+</button>
+                </div>
+                <div class="todo-list" id="others"></div>
+            </div>
+
+            <div class="section private">
+                <div class="section-header">
+                    <h2 class="section-title">👤 私人待辦</h2>
+                    <button class="add-btn" onclick="showAddModal('private')">+</button>
+                </div>
+                <div class="todo-list" id="private"></div>
+            </div>
+
+            <div class="section focus">
+                <div class="section-header">
+                    <h2 class="section-title">👁️ 近期關注</h2>
+                    <button class="add-btn" onclick="showAddModal('focus')">+</button>
+                </div>
+                <div class="todo-list" id="focus"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="addModal">
+        <div class="modal-content">
+            <h3>新增待辦事項</h3>
+            <input type="text" id="newTodoText" placeholder="輸入待辦事項..." />
+            <select id="newTodoDay" class="hidden">
+                <option value="monday">週一</option>
+                <option value="tuesday">週二</option>
+                <option value="wednesday">週三</option>
+                <option value="thursday">週四</option>
+                <option value="friday">週五</option>
+            </select>
+            <div class="modal-buttons">
+                <button class="modal-btn secondary" onclick="closeAddModal()">取消</button>
+                <button class="modal-btn primary" onclick="addTodo()">新增</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="noteModal">
+        <div class="modal-content">
+            <h3>編輯備註</h3>
+            <textarea id="noteText" placeholder="輸入備註..."></textarea>
+            <div class="modal-buttons">
+                <button class="modal-btn secondary" onclick="closeNoteModal()">取消</button>
+                <button class="modal-btn primary" onclick="saveNote()">儲存</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let todos = JSON.parse(localStorage.getItem('todos') || '{}');
+        let currentEditingId = null;
+        let currentAddSection = null;
+        let draggedElement = null;
+
+        // 初始化
+        function init() {
+            loadTodos();
+            setupDragAndDrop();
+            
+            // 載入示範資料
+            if (Object.keys(todos).length === 0) {
+                loadDemoData();
+            }
+        }
+
+        // 載入示範資料
+        function loadDemoData() {
+            todos = {
+                '1': { text: '完成專案報告', section: 'monday', important: false, note: '' },
+                '2': { text: '團隊會議', section: 'monday', important: true, note: '需準備簡報資料' },
+                '3': { text: '客戶電話會議', section: 'tuesday', important: false, note: '' },
+                '4': { text: '週報整理', section: 'friday', important: false, note: '' },
+                '5': { text: '更新文件資料', section: 'others', important: false, note: '' },
+                '6': { text: '回覆郵件', section: 'others', important: false, note: '' },
+                '7': { text: '預約醫生', section: 'private', important: true, note: '' },
+                '8': { text: '新技術學習', section: 'focus', important: false, note: 'React 19 新功能研究' }
+            };
+            saveTodos();
+            loadTodos();
+        }
+
+        // 儲存到 localStorage
+        function saveTodos() {
+            localStorage.setItem('todos', JSON.stringify(todos));
+        }
+
+        // 載入所有待辦事項
+        function loadTodos() {
+            const sections = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'others', 'private', 'focus'];
+            sections.forEach(section => {
+                const container = document.getElementById(section);
+                if (container) container.innerHTML = '';
+            });
+
+            Object.keys(todos).forEach(id => {
+                renderTodo(id, todos[id]);
+            });
+        }
+
+        // 渲染待辦事項
+        function renderTodo(id, todo) {
+            const container = document.getElementById(todo.section);
+            if (!container) return;
+
+            const todoDiv = document.createElement('div');
+            todoDiv.className = `todo-item ${todo.important ? 'important' : ''}`;
+            todoDiv.draggable = true;
+            todoDiv.dataset.id = id;
+
+            todoDiv.innerHTML = `
+                <span class="drag-handle">⋮⋮</span>
+                <div class="todo-content">
+                    <div class="todo-text">${escapeHtml(todo.text)}</div>
+                    ${todo.note ? `<div class="note-text">📝 ${escapeHtml(todo.note)}</div>` : ''}
+                </div>
+                <div class="todo-actions">
+                    <button class="action-btn" onclick="toggleImportant('${id}')">!</button>
+                    <button class="action-btn" onclick="showNoteModal('${id}')">+</button>
+                    <button class="action-btn" onclick="deleteTodo('${id}')">×</button>
+                </div>
+            `;
+
+            todoDiv.addEventListener('dragstart', handleDragStart);
+            todoDiv.addEventListener('dragend', handleDragEnd);
+
+            container.appendChild(todoDiv);
+        }
+
+        // 顯示新增 Modal
+        function showAddModal(section) {
+            currentAddSection = section;
+            const modal = document.getElementById('addModal');
+            const daySelect = document.getElementById('newTodoDay');
+            
+            if (section === 'weekly') {
+                daySelect.classList.remove('hidden');
+            } else {
+                daySelect.classList.add('hidden');
+            }
+            
+            document.getElementById('newTodoText').value = '';
+            modal.classList.add('active');
+        }
+
+        // 關閉新增 Modal
+        function closeAddModal() {
+            document.getElementById('addModal').classList.remove('active');
+        }
+
+        // 新增待辦事項
+        function addTodo() {
+            const text = document.getElementById('newTodoText').value.trim();
+            if (!text) return;
+
+            let section = currentAddSection;
+            if (section === 'weekly') {
+                section = document.getElementById('newTodoDay').value;
+            }
+
+            const todoId = Date.now().toString();
+            todos[todoId] = {
+                text: text,
+                section: section,
+                important: false,
+                note: ''
+            };
+
+            saveTodos();
+            loadTodos();
+            closeAddModal();
+        }
+
+        // 標記重要
+        function toggleImportant(id) {
+            if (todos[id]) {
+                todos[id].important = !todos[id].important;
+                saveTodos();
+                loadTodos();
+            }
+        }
+
+        // 顯示備註 Modal
+        function showNoteModal(id) {
+            currentEditingId = id;
+            if (todos[id]) {
+                document.getElementById('noteText').value = todos[id].note || '';
+                document.getElementById('noteModal').classList.add('active');
+            }
+        }
+
+        // 關閉備註 Modal
+        function closeNoteModal() {
+            document.getElementById('noteModal').classList.remove('active');
+        }
+
+        // 儲存備註
+        function saveNote() {
+            const note = document.getElementById('noteText').value.trim();
+            if (todos[currentEditingId]) {
+                todos[currentEditingId].note = note;
+                saveTodos();
+                loadTodos();
+            }
+            closeNoteModal();
+        }
+
+        // 刪除待辦事項
+        function deleteTodo(id) {
+            if (!confirm('是否確定刪除？')) return;
+            delete todos[id];
+            saveTodos();
+            loadTodos();
+        }
+
+        // 拖曳處理
+        function handleDragStart(e) {
+            draggedElement = this;
+            this.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+        }
+
+        function handleDragEnd(e) {
+            this.classList.remove('dragging');
+        }
+
+        function setupDragAndDrop() {
+            const dropZones = document.querySelectorAll('.todo-list, .day-column');
+            
+            dropZones.forEach(zone => {
+                zone.addEventListener('dragover', handleDragOver);
+                zone.addEventListener('drop', handleDrop);
+                zone.addEventListener('dragleave', handleDragLeave);
+            });
+        }
+
+        function handleDragOver(e) {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            
+            if (this.classList.contains('day-column')) {
+                this.classList.add('drag-over');
+            }
+            
+            return false;
+        }
+
+        function handleDragLeave(e) {
+            if (this.classList.contains('day-column')) {
+                this.classList.remove('drag-over');
+            }
+        }
+
+        function handleDrop(e) {
+            e.stopPropagation();
+            e.preventDefault();
+
+            if (this.classList.contains('day-column')) {
+                this.classList.remove('drag-over');
+            }
+
+            if (!draggedElement) return;
+
+            const todoId = draggedElement.dataset.id;
+            let newSection;
+
+            if (this.classList.contains('day-column')) {
+                newSection = this.dataset.day;
+            } else if (this.classList.contains('todo-list')) {
+                newSection = this.id;
+            }
+
+            if (newSection && todos[todoId]) {
+                todos[todoId].section = newSection;
+                saveTodos();
+                loadTodos();
+            }
+
+            return false;
+        }
+
+        // HTML 轉義
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Enter 鍵新增
+        document.addEventListener('DOMContentLoaded', () => {
+            init();
+            
+            const newTodoInput = document.getElementById('newTodoText');
+            if (newTodoInput) {
+                newTodoInput.addEventListener('keypress', (e) => {
+                    if (e.key === 'Enter') {
+                        addTodo();
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
