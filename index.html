@@ -360,15 +360,15 @@
         }
 
         .action-btn {
-            width: 24px;
-            height: 24px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             border: none;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 0.85rem;
+            font-size: 1rem;
             transition: all 0.2s;
             background: #9e9e9e;
             color: white;
@@ -668,6 +668,18 @@
         </div>
     </div>
 
+    <!-- 編輯待辦事項 Modal -->
+    <div class="modal" id="editModal">
+        <div class="modal-content">
+            <h3>編輯待辦事項</h3>
+            <input type="text" id="editTodoText" placeholder="輸入待辦事項..." />
+            <div class="modal-buttons">
+                <button class="modal-btn secondary" onclick="closeEditModal()">取消</button>
+                <button class="modal-btn primary" onclick="saveEditTodo()">儲存</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
@@ -698,6 +710,7 @@
         window.currentUser = null;
         window.currentEditingId = null;
         window.currentAddSection = null;
+        window.currentEditingTodoId = null;
 
         // 登入函數
         window.login = async function() {
@@ -975,9 +988,10 @@
                     ${todo.note ? `<div class="note-text">📝 ${escapeHtml(todo.note)}</div>` : ''}
                 </div>
                 <div class="todo-actions">
-                    <button class="action-btn" onclick="toggleImportant('${id}')">!</button>
-                    <button class="action-btn" onclick="showNoteModal('${id}')">+</button>
-                    <button class="action-btn" onclick="deleteTodo('${id}')">×</button>
+                    <button class="action-btn" onclick="showEditModal('${id}')" title="編輯">✏️</button>
+                    <button class="action-btn" onclick="toggleImportant('${id}')" title="標記重要">!</button>
+                    <button class="action-btn" onclick="showNoteModal('${id}')" title="添加備註">+</button>
+                    <button class="action-btn" onclick="deleteTodo('${id}')" title="刪除">×</button>
                 </div>
             `;
 
@@ -1065,6 +1079,50 @@
                     important: !todo.important
                 });
             }
+        };
+
+        // 顯示編輯待辦事項 Modal
+        window.showEditModal = async function(id) {
+            window.currentEditingTodoId = id;
+            const userId = window.currentUser.uid;
+            const todoRef = ref(database, `users/${userId}/todos/${id}`);
+            const snapshot = await get(todoRef);
+            
+            if (snapshot.exists()) {
+                const todo = snapshot.val();
+                document.getElementById('editTodoText').value = todo.text || '';
+                document.getElementById('editModal').classList.add('active');
+            }
+        };
+
+        // 關閉編輯待辦事項 Modal
+        window.closeEditModal = function() {
+            document.getElementById('editModal').classList.remove('active');
+            window.currentEditingTodoId = null;
+        };
+
+        // 儲存編輯的待辦事項
+        window.saveEditTodo = async function() {
+            const newText = document.getElementById('editTodoText').value.trim();
+            if (!newText) {
+                alert('待辦事項不能為空');
+                return;
+            }
+
+            const id = window.currentEditingTodoId;
+            const userId = window.currentUser.uid;
+            const todoRef = ref(database, `users/${userId}/todos/${id}`);
+            const snapshot = await get(todoRef);
+            
+            if (snapshot.exists()) {
+                const todo = snapshot.val();
+                await set(todoRef, {
+                    ...todo,
+                    text: newText
+                });
+            }
+
+            closeEditModal();
         };
 
         // 顯示備註 Modal
