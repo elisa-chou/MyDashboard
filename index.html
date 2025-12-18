@@ -619,10 +619,30 @@
         @media (max-width: 1024px) {
             .dashboard-grid {
                 grid-template-columns: 1fr;
+                display: flex;
+                flex-direction: column;
             }
 
             .section.weekly {
                 grid-row: auto;
+                order: 1;
+            }
+
+            .section.others {
+                order: 2;
+            }
+
+            .section.private {
+                order: 3;
+            }
+
+            .section.focus {
+                order: 4;
+            }
+
+            .section.nextweek {
+                grid-row: auto;
+                order: 5;
             }
         }
 
