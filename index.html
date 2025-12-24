@@ -430,6 +430,11 @@
             opacity: 0.5;
         }
 
+        .todo-item.drag-after {
+            border-top: 3px solid #daa520;
+            margin-top: 8px;
+        }
+
         .drag-handle {
             color: #daa520;
             font-size: 1.4rem;
@@ -613,6 +618,39 @@
 
         .modal-btn.secondary:hover {
             background: rgba(120, 120, 120, 0.7);
+        }
+
+        /* 日期按鈕組樣式 */
+        .day-button-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .day-button {
+            padding: 10px 20px;
+            background: rgba(0, 0, 0, 0.4);
+            border: 2px solid rgba(218, 165, 32, 0.4);
+            border-radius: 8px;
+            color: #e8dcc4;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+        }
+
+        .day-button:hover {
+            background: rgba(218, 165, 32, 0.2);
+            border-color: #daa520;
+        }
+
+        .day-button.selected {
+            background: linear-gradient(135deg, rgba(138, 43, 226, 0.6), rgba(75, 0, 130, 0.6));
+            border-color: #daa520;
+            color: #daa520;
+            box-shadow: 0 0 15px rgba(218, 165, 32, 0.4);
         }
 
         /* 響應式設計 */
@@ -810,25 +848,14 @@
     <div class="modal" id="addModal">
         <div class="modal-content">
             <h3>新增魔法任務</h3>
+            <div id="dayButtonGroup" class="day-button-group hidden">
+                <!-- 按鈕會由 JavaScript 動態生成 -->
+            </div>
             <input type="text" id="newTodoText" placeholder="輸入魔法任務..." />
-            <select id="newTodoDay" class="hidden" style="width: 100%; padding: 12px; border: 2px solid rgba(218, 165, 32, 0.4); border-radius: 8px; font-size: 1rem; margin-bottom: 15px;">
-                <!-- 選項會由 JavaScript 動態生成 -->
-            </select>
+            <textarea id="newTodoNote" placeholder="輸入魔法筆記..."></textarea>
             <div class="modal-buttons">
                 <button class="modal-btn secondary" onclick="closeAddModal()">取消</button>
                 <button class="modal-btn primary" onclick="addTodo()">施展魔法</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- 編輯備註 Modal -->
-    <div class="modal" id="noteModal">
-        <div class="modal-content">
-            <h3>編輯魔法筆記</h3>
-            <textarea id="noteText" placeholder="輸入魔法筆記..."></textarea>
-            <div class="modal-buttons">
-                <button class="modal-btn secondary" onclick="closeNoteModal()">取消</button>
-                <button class="modal-btn primary" onclick="saveNote()">儲存</button>
             </div>
         </div>
     </div>
@@ -838,6 +865,7 @@
         <div class="modal-content">
             <h3>編輯魔法任務</h3>
             <input type="text" id="editTodoText" placeholder="輸入魔法任務..." />
+            <textarea id="editTodoNote" placeholder="輸入魔法筆記..."></textarea>
             <div class="modal-buttons">
                 <button class="modal-btn secondary" onclick="closeEditModal()">取消</button>
                 <button class="modal-btn primary" onclick="saveEditTodo()">儲存</button>
@@ -947,9 +975,22 @@
 
                 const data = snapshot.val();
                 if (data) {
-                    Object.keys(data).forEach(id => {
-                        const todo = data[id];
-                        renderTodo(id, todo);
+                    // 轉換成陣列並按 order 排序
+                    const todosArray = Object.keys(data).map(id => ({
+                        id: id,
+                        ...data[id]
+                    }));
+                    
+                    // 按 order 排序（如果沒有 order 則使用 createdAt）
+                    todosArray.sort((a, b) => {
+                        const orderA = a.order || a.createdAt || 0;
+                        const orderB = b.order || b.createdAt || 0;
+                        return orderA - orderB;
+                    });
+                    
+                    // 依序渲染
+                    todosArray.forEach(todo => {
+                        renderTodo(todo.id, todo);
                     });
                 }
             });
@@ -1155,7 +1196,6 @@
                 <div class="todo-actions">
                     <button class="action-btn" onclick="showEditModal('${id}')" title="編輯">⋯</button>
                     <button class="action-btn" onclick="toggleImportant('${id}')" title="標記重要">!</button>
-                    <button class="action-btn" onclick="showNoteModal('${id}')" title="添加備註">+</button>
                     <button class="action-btn" onclick="deleteTodo('${id}')" title="刪除">×</button>
                 </div>
             `;
@@ -1170,34 +1210,58 @@
         // 顯示新增 Modal
         window.showAddModal = function(section) {
             window.currentAddSection = section;
+            window.selectedDay = null;
             const modal = document.getElementById('addModal');
-            const daySelect = document.getElementById('newTodoDay');
+            const dayButtonGroup = document.getElementById('dayButtonGroup');
             
             if (section === 'weekly') {
-                daySelect.classList.remove('hidden');
-                // 只顯示當周選項
-                daySelect.innerHTML = `
-                    <option value="monday">週一</option>
-                    <option value="tuesday">週二</option>
-                    <option value="wednesday">週三</option>
-                    <option value="thursday">週四</option>
-                    <option value="friday">週五</option>
+                dayButtonGroup.classList.remove('hidden');
+                dayButtonGroup.innerHTML = `
+                    <button class="day-button" data-day="monday">一</button>
+                    <button class="day-button" data-day="tuesday">二</button>
+                    <button class="day-button" data-day="wednesday">三</button>
+                    <button class="day-button" data-day="thursday">四</button>
+                    <button class="day-button" data-day="friday">五</button>
                 `;
+                
+                // 添加按鈕點擊事件
+                dayButtonGroup.querySelectorAll('.day-button').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        dayButtonGroup.querySelectorAll('.day-button').forEach(b => b.classList.remove('selected'));
+                        this.classList.add('selected');
+                        window.selectedDay = this.dataset.day;
+                    });
+                });
+                
+                // 預設選擇週一
+                dayButtonGroup.querySelector('.day-button').click();
             } else if (section === 'nextweek') {
-                daySelect.classList.remove('hidden');
-                // 只顯示下周選項
-                daySelect.innerHTML = `
-                    <option value="next_monday">週一</option>
-                    <option value="next_tuesday">週二</option>
-                    <option value="next_wednesday">週三</option>
-                    <option value="next_thursday">週四</option>
-                    <option value="next_friday">週五</option>
+                dayButtonGroup.classList.remove('hidden');
+                dayButtonGroup.innerHTML = `
+                    <button class="day-button" data-day="next_monday">一</button>
+                    <button class="day-button" data-day="next_tuesday">二</button>
+                    <button class="day-button" data-day="next_wednesday">三</button>
+                    <button class="day-button" data-day="next_thursday">四</button>
+                    <button class="day-button" data-day="next_friday">五</button>
                 `;
+                
+                // 添加按鈕點擊事件
+                dayButtonGroup.querySelectorAll('.day-button').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        dayButtonGroup.querySelectorAll('.day-button').forEach(b => b.classList.remove('selected'));
+                        this.classList.add('selected');
+                        window.selectedDay = this.dataset.day;
+                    });
+                });
+                
+                // 預設選擇週一
+                dayButtonGroup.querySelector('.day-button').click();
             } else {
-                daySelect.classList.add('hidden');
+                dayButtonGroup.classList.add('hidden');
             }
             
             document.getElementById('newTodoText').value = '';
+            document.getElementById('newTodoNote').value = '';
             modal.classList.add('active');
         };
 
@@ -1211,9 +1275,11 @@
             const text = document.getElementById('newTodoText').value.trim();
             if (!text) return;
 
+            const note = document.getElementById('newTodoNote').value.trim();
             let section = window.currentAddSection;
+            
             if (section === 'weekly' || section === 'nextweek') {
-                section = document.getElementById('newTodoDay').value;
+                section = window.selectedDay;
             }
 
             const userId = window.currentUser.uid;
@@ -1224,8 +1290,9 @@
                 text: text,
                 section: section,
                 important: false,
-                note: '',
-                createdAt: Date.now()
+                note: note,
+                createdAt: Date.now(),
+                order: Date.now()
             });
 
             closeAddModal();
@@ -1256,6 +1323,7 @@
             if (snapshot.exists()) {
                 const todo = snapshot.val();
                 document.getElementById('editTodoText').value = todo.text || '';
+                document.getElementById('editTodoNote').value = todo.note || '';
                 document.getElementById('editModal').classList.add('active');
             }
         };
@@ -1274,6 +1342,7 @@
                 return;
             }
 
+            const newNote = document.getElementById('editTodoNote').value.trim();
             const id = window.currentEditingTodoId;
             const userId = window.currentUser.uid;
             const todoRef = ref(database, `users/${userId}/todos/${id}`);
@@ -1283,49 +1352,12 @@
                 const todo = snapshot.val();
                 await set(todoRef, {
                     ...todo,
-                    text: newText
+                    text: newText,
+                    note: newNote
                 });
             }
 
             closeEditModal();
-        };
-
-        // 顯示備註 Modal
-        window.showNoteModal = async function(id) {
-            window.currentEditingId = id;
-            const userId = window.currentUser.uid;
-            const todoRef = ref(database, `users/${userId}/todos/${id}`);
-            const snapshot = await get(todoRef);
-            
-            if (snapshot.exists()) {
-                const todo = snapshot.val();
-                document.getElementById('noteText').value = todo.note || '';
-                document.getElementById('noteModal').classList.add('active');
-            }
-        };
-
-        // 關閉備註 Modal
-        window.closeNoteModal = function() {
-            document.getElementById('noteModal').classList.remove('active');
-        };
-
-        // 儲存備註
-        window.saveNote = async function() {
-            const note = document.getElementById('noteText').value.trim();
-            const id = window.currentEditingId;
-            const userId = window.currentUser.uid;
-            const todoRef = ref(database, `users/${userId}/todos/${id}`);
-            const snapshot = await get(todoRef);
-            
-            if (snapshot.exists()) {
-                const todo = snapshot.val();
-                await set(todoRef, {
-                    ...todo,
-                    note: note
-                });
-            }
-
-            closeNoteModal();
         };
 
         // 刪除待辦事項
@@ -1339,6 +1371,7 @@
 
         // 拖曳處理
         let draggedElement = null;
+        let afterElement = null;
 
         function handleDragStart(e) {
             draggedElement = this;
@@ -1349,6 +1382,9 @@
 
         function handleDragEnd(e) {
             this.classList.remove('dragging');
+            document.querySelectorAll('.todo-item').forEach(item => {
+                item.classList.remove('drag-after');
+            });
         }
 
         // 為所有可放置區域添加拖曳事件
@@ -1362,9 +1398,41 @@
             });
         });
 
+        function getDragAfterElement(container, y) {
+            const draggableElements = [...container.querySelectorAll('.todo-item:not(.dragging)')];
+            
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+
         function handleDragOver(e) {
             e.preventDefault();
             e.dataTransfer.dropEffect = 'move';
+            
+            const container = this.classList.contains('day-column') ? 
+                this.querySelector('.todo-list') : this;
+            
+            if (container) {
+                afterElement = getDragAfterElement(container, e.clientY);
+                
+                // 移除所有舊的標記
+                document.querySelectorAll('.todo-item').forEach(item => {
+                    item.classList.remove('drag-after');
+                });
+                
+                // 添加新標記
+                if (afterElement) {
+                    afterElement.classList.add('drag-after');
+                }
+            }
             
             if (this.classList.contains('day-column')) {
                 this.classList.add('drag-over');
@@ -1391,26 +1459,82 @@
 
             const todoId = draggedElement.dataset.id;
             let newSection;
+            let container;
 
             if (this.classList.contains('day-column')) {
                 newSection = this.dataset.day;
+                container = this.querySelector('.todo-list');
             } else if (this.classList.contains('todo-list')) {
                 newSection = this.id;
+                container = this;
             }
 
-            if (newSection) {
+            if (newSection && container) {
                 const userId = window.currentUser.uid;
                 const todoRef = ref(database, `users/${userId}/todos/${todoId}`);
                 const snapshot = await get(todoRef);
                 
                 if (snapshot.exists()) {
                     const todo = snapshot.val();
+                    
+                    // 計算新的 order 值
+                    let newOrder;
+                    if (afterElement) {
+                        const afterId = afterElement.dataset.id;
+                        const afterTodoRef = ref(database, `users/${userId}/todos/${afterId}`);
+                        const afterSnapshot = await get(afterTodoRef);
+                        
+                        if (afterSnapshot.exists()) {
+                            const afterTodo = afterSnapshot.val();
+                            // 獲取前一個元素
+                            const beforeElement = afterElement.previousElementSibling;
+                            if (beforeElement && beforeElement !== draggedElement) {
+                                const beforeId = beforeElement.dataset.id;
+                                const beforeTodoRef = ref(database, `users/${userId}/todos/${beforeId}`);
+                                const beforeSnapshot = await get(beforeTodoRef);
+                                if (beforeSnapshot.exists()) {
+                                    const beforeTodo = beforeSnapshot.val();
+                                    newOrder = (beforeTodo.order + afterTodo.order) / 2;
+                                } else {
+                                    newOrder = afterTodo.order - 1;
+                                }
+                            } else {
+                                newOrder = afterTodo.order - 1;
+                            }
+                        } else {
+                            newOrder = Date.now();
+                        }
+                    } else {
+                        // 放在最後
+                        const items = container.querySelectorAll('.todo-item:not(.dragging)');
+                        if (items.length > 0) {
+                            const lastItem = items[items.length - 1];
+                            const lastId = lastItem.dataset.id;
+                            const lastTodoRef = ref(database, `users/${userId}/todos/${lastId}`);
+                            const lastSnapshot = await get(lastTodoRef);
+                            if (lastSnapshot.exists()) {
+                                const lastTodo = lastSnapshot.val();
+                                newOrder = lastTodo.order + 1;
+                            } else {
+                                newOrder = Date.now();
+                            }
+                        } else {
+                            newOrder = Date.now();
+                        }
+                    }
+                    
                     await set(todoRef, {
                         ...todo,
-                        section: newSection
+                        section: newSection,
+                        order: newOrder
                     });
                 }
             }
+
+            // 清理標記
+            document.querySelectorAll('.todo-item').forEach(item => {
+                item.classList.remove('drag-after');
+            });
 
             return false;
         }
