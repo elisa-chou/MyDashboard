@@ -1486,9 +1486,14 @@
                         
                         if (afterSnapshot.exists()) {
                             const afterTodo = afterSnapshot.val();
-                            // 獲取前一個元素
-                            const beforeElement = afterElement.previousElementSibling;
-                            if (beforeElement && beforeElement !== draggedElement) {
+                            // 獲取前一個元素（排除正在拖曳的元素）
+                            let beforeElement = afterElement.previousElementSibling;
+                            // 如果前一個元素是正在拖曳的元素，再往前找一個
+                            while (beforeElement && beforeElement === draggedElement) {
+                                beforeElement = beforeElement.previousElementSibling;
+                            }
+                            
+                            if (beforeElement) {
                                 const beforeId = beforeElement.dataset.id;
                                 const beforeTodoRef = ref(database, `users/${userId}/todos/${beforeId}`);
                                 const beforeSnapshot = await get(beforeTodoRef);
@@ -1499,6 +1504,7 @@
                                     newOrder = afterTodo.order - 1;
                                 }
                             } else {
+                                // 沒有前一個元素，放在 afterElement 之前
                                 newOrder = afterTodo.order - 1;
                             }
                         } else {
@@ -1506,7 +1512,7 @@
                         }
                     } else {
                         // 放在最後
-                        const items = container.querySelectorAll('.todo-item:not(.dragging)');
+                        const items = [...container.querySelectorAll('.todo-item:not(.dragging)')];
                         if (items.length > 0) {
                             const lastItem = items[items.length - 1];
                             const lastId = lastItem.dataset.id;
