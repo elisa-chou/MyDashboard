@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>疾疾，清單現身</title>
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪄</text></svg>">
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪄</text></svg>">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:wght@400;600;700&display=swap');
 
@@ -31,7 +33,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: 
+            background:
                 radial-gradient(circle at 20% 50%, rgba(138, 43, 226, 0.15) 0%, transparent 50%),
                 radial-gradient(circle at 80% 80%, rgba(218, 165, 32, 0.15) 0%, transparent 50%),
                 radial-gradient(circle at 40% 20%, rgba(139, 0, 0, 0.1) 0%, transparent 50%);
@@ -55,7 +57,7 @@
             background: linear-gradient(135deg, rgba(25, 15, 40, 0.95) 0%, rgba(50, 20, 60, 0.95) 100%);
             border-radius: 20px;
             padding: 50px;
-            box-shadow: 
+            box-shadow:
                 0 8px 32px rgba(138, 43, 226, 0.4),
                 0 0 60px rgba(218, 165, 32, 0.2),
                 inset 0 0 50px rgba(255, 215, 0, 0.05);
@@ -123,7 +125,7 @@
             cursor: pointer;
             transition: all 0.3s;
             font-family: 'Cinzel', serif;
-            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
             box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
         }
 
@@ -164,7 +166,7 @@
         .header h1 {
             font-size: 2rem;
             font-family: 'Cinzel', serif;
-            text-shadow: 
+            text-shadow:
                 0 0 20px rgba(218, 165, 32, 0.8),
                 0 0 40px rgba(138, 43, 226, 0.4);
             flex: 1;
@@ -203,7 +205,7 @@
             background: linear-gradient(135deg, rgba(30, 20, 50, 0.9) 0%, rgba(50, 30, 70, 0.9) 100%);
             border-radius: 16px;
             padding: 18px;
-            box-shadow: 
+            box-shadow:
                 0 8px 20px rgba(0, 0, 0, 0.4),
                 0 0 30px rgba(138, 43, 226, 0.2),
                 inset 0 0 50px rgba(218, 165, 32, 0.05);
@@ -221,26 +223,24 @@
             left: 0;
             right: 0;
             bottom: 0;
-            background: 
-                repeating-linear-gradient(
-                    0deg,
+            background:
+                repeating-linear-gradient(0deg,
                     transparent,
                     transparent 2px,
                     rgba(218, 165, 32, 0.03) 2px,
-                    rgba(218, 165, 32, 0.03) 4px
-                );
+                    rgba(218, 165, 32, 0.03) 4px);
             pointer-events: none;
             z-index: 0;
         }
 
-        .section > * {
+        .section>* {
             position: relative;
             z-index: 1;
         }
 
         .section:hover {
             transform: translateY(-8px);
-            box-shadow: 
+            box-shadow:
                 0 12px 30px rgba(0, 0, 0, 0.5),
                 0 0 50px rgba(218, 165, 32, 0.4);
             border-color: rgba(218, 165, 32, 0.6);
@@ -402,7 +402,7 @@
             display: flex;
             align-items: flex-start;
             gap: 12px;
-            box-shadow: 
+            box-shadow:
                 0 4px 10px rgba(0, 0, 0, 0.3),
                 0 0 15px rgba(138, 43, 226, 0.2);
             cursor: move;
@@ -411,7 +411,7 @@
         }
 
         .todo-item:hover {
-            box-shadow: 
+            box-shadow:
                 0 6px 15px rgba(0, 0, 0, 0.4),
                 0 0 25px rgba(218, 165, 32, 0.3);
             transform: translateX(5px);
@@ -421,7 +421,7 @@
         .todo-item.important {
             background: linear-gradient(135deg, rgba(139, 0, 0, 0.6), rgba(70, 0, 0, 0.6));
             border-left: 4px solid #daa520;
-            box-shadow: 
+            box-shadow:
                 0 4px 10px rgba(139, 0, 0, 0.4),
                 0 0 20px rgba(218, 165, 32, 0.3);
         }
@@ -530,7 +530,7 @@
             padding: 35px;
             max-width: 550px;
             width: 90%;
-            box-shadow: 
+            box-shadow:
                 0 12px 40px rgba(0, 0, 0, 0.6),
                 0 0 60px rgba(138, 43, 226, 0.4),
                 inset 0 0 50px rgba(218, 165, 32, 0.05);
@@ -718,6 +718,7 @@
         }
     </style>
 </head>
+
 <body>
     <!-- 登入頁面 -->
     <div class="login-container" id="loginContainer">
@@ -726,11 +727,15 @@
             <p style="text-align: center; color: #c9b896; margin-bottom: 20px;">使用 Google 帳號施展登入魔法</p>
             <button onclick="login()" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
                 <svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
-                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
-                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
-                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
-                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
-                    <path fill="none" d="M0 0h48v48H0z"/>
+                    <path fill="#EA4335"
+                        d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
+                    <path fill="#4285F4"
+                        d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
+                    <path fill="#FBBC05"
+                        d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
+                    <path fill="#34A853"
+                        d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+                    <path fill="none" d="M0 0h48v48H0z" />
                 </svg>
                 使用 Google 登入
             </button>
@@ -752,7 +757,8 @@
                 <div class="section-header">
                     <h2 class="section-title">📜 當週任務</h2>
                     <div class="week-controls">
-                        <input type="date" class="date-picker" id="currentWeekPicker" onchange="updateWeekDates('current')">
+                        <input type="date" class="date-picker" id="currentWeekPicker"
+                            onchange="updateWeekDates('current')">
                         <button class="clear-btn" onclick="clearWeek('current')">清空</button>
                         <button class="add-btn" onclick="showAddModal('weekly')">+</button>
                     </div>
@@ -906,9 +912,9 @@
         window.currentEditingTodoId = null;
 
         // 登入函數
-        window.login = async function() {
+        window.login = async function () {
             const errorMessage = document.getElementById('errorMessage');
-            
+
             try {
                 // 使用 Google 登入
                 const result = await signInWithPopup(auth, provider);
@@ -927,7 +933,7 @@
         };
 
         // 登出函數
-        window.logout = async function() {
+        window.logout = async function () {
             await signOut(auth);
             window.currentUser = null;
             showLogin();
@@ -965,9 +971,9 @@
 
             onValue(todosRef, (snapshot) => {
                 // 清空所有列表
-                const sections = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 
-                                 'next_monday', 'next_tuesday', 'next_wednesday', 'next_thursday', 'next_friday',
-                                 'others', 'private', 'focus'];
+                const sections = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday',
+                    'next_monday', 'next_tuesday', 'next_wednesday', 'next_thursday', 'next_friday',
+                    'others', 'private', 'focus'];
                 sections.forEach(section => {
                     const container = document.getElementById(section);
                     if (container) container.innerHTML = '';
@@ -980,14 +986,14 @@
                         id: id,
                         ...data[id]
                     }));
-                    
+
                     // 按 order 排序（如果沒有 order 則使用 createdAt）
                     todosArray.sort((a, b) => {
                         const orderA = a.order || a.createdAt || 0;
                         const orderB = b.order || b.createdAt || 0;
                         return orderA - orderB;
                     });
-                    
+
                     // 依序渲染
                     todosArray.forEach(todo => {
                         renderTodo(todo.id, todo);
@@ -1000,10 +1006,10 @@
         }
 
         // 更新週間日期顯示
-        window.updateWeekDates = function(weekType) {
+        window.updateWeekDates = function (weekType) {
             const picker = document.getElementById(weekType === 'current' ? 'currentWeekPicker' : 'nextWeekPicker');
             const selectedDate = new Date(picker.value);
-            
+
             if (isNaN(selectedDate.getTime())) return;
 
             // 計算該週的週一
@@ -1029,21 +1035,21 @@
         };
 
         // 清空週間所有待辦
-        window.clearWeek = async function(weekType) {
+        window.clearWeek = async function (weekType) {
             if (!confirm(`確定要清空${weekType === 'current' ? '當周' : '下周'}待辦的所有內容嗎？`)) return;
 
             if (!window.currentUser) return;
             const userId = window.currentUser.uid;
 
             // 決定要清空的 sections
-            const sections = weekType === 'current' 
+            const sections = weekType === 'current'
                 ? ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
                 : ['next_monday', 'next_tuesday', 'next_wednesday', 'next_thursday', 'next_friday'];
 
             // 獲取所有待辦事項
             const todosRef = ref(database, `users/${userId}/todos`);
             const snapshot = await get(todosRef);
-            
+
             if (snapshot.exists()) {
                 const data = snapshot.val();
                 const deletePromises = [];
@@ -1089,12 +1095,12 @@
 
             const todosRef = ref(database, `users/${userId}/todos`);
             const snapshot = await get(todosRef);
-            
+
             if (!snapshot.exists()) return;
 
             const data = snapshot.val();
             const updatePromises = [];
-            
+
             // 找出所有下周的待辦事項，改為當周
             const nextWeekMap = {
                 'next_monday': 'monday',
@@ -1120,11 +1126,11 @@
             // 移動日期顯示
             const nextWeekPicker = document.getElementById('nextWeekPicker');
             const currentWeekPicker = document.getElementById('currentWeekPicker');
-            
+
             if (nextWeekPicker.value) {
                 currentWeekPicker.value = nextWeekPicker.value;
                 updateWeekDates('current');
-                
+
                 // 清空下周日期
                 nextWeekPicker.value = '';
                 const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
@@ -1157,7 +1163,7 @@
         async function loadWeekDates() {
             if (!window.currentUser) return;
             const userId = window.currentUser.uid;
-            
+
             // 載入當周日期
             const currentDateRef = ref(database, `users/${userId}/weekDates/current`);
             const currentSnapshot = await get(currentDateRef);
@@ -1208,12 +1214,12 @@
         }
 
         // 顯示新增 Modal
-        window.showAddModal = function(section) {
+        window.showAddModal = function (section) {
             window.currentAddSection = section;
             window.selectedDay = null;
             const modal = document.getElementById('addModal');
             const dayButtonGroup = document.getElementById('dayButtonGroup');
-            
+
             if (section === 'weekly') {
                 dayButtonGroup.classList.remove('hidden');
                 dayButtonGroup.innerHTML = `
@@ -1223,16 +1229,16 @@
                     <button class="day-button" data-day="thursday">四</button>
                     <button class="day-button" data-day="friday">五</button>
                 `;
-                
+
                 // 添加按鈕點擊事件
                 dayButtonGroup.querySelectorAll('.day-button').forEach(btn => {
-                    btn.addEventListener('click', function() {
+                    btn.addEventListener('click', function () {
                         dayButtonGroup.querySelectorAll('.day-button').forEach(b => b.classList.remove('selected'));
                         this.classList.add('selected');
                         window.selectedDay = this.dataset.day;
                     });
                 });
-                
+
                 // 預設選擇週一
                 dayButtonGroup.querySelector('.day-button').click();
             } else if (section === 'nextweek') {
@@ -1244,40 +1250,40 @@
                     <button class="day-button" data-day="next_thursday">四</button>
                     <button class="day-button" data-day="next_friday">五</button>
                 `;
-                
+
                 // 添加按鈕點擊事件
                 dayButtonGroup.querySelectorAll('.day-button').forEach(btn => {
-                    btn.addEventListener('click', function() {
+                    btn.addEventListener('click', function () {
                         dayButtonGroup.querySelectorAll('.day-button').forEach(b => b.classList.remove('selected'));
                         this.classList.add('selected');
                         window.selectedDay = this.dataset.day;
                     });
                 });
-                
+
                 // 預設選擇週一
                 dayButtonGroup.querySelector('.day-button').click();
             } else {
                 dayButtonGroup.classList.add('hidden');
             }
-            
+
             document.getElementById('newTodoText').value = '';
             document.getElementById('newTodoNote').value = '';
             modal.classList.add('active');
         };
 
         // 關閉新增 Modal
-        window.closeAddModal = function() {
+        window.closeAddModal = function () {
             document.getElementById('addModal').classList.remove('active');
         };
 
         // 新增待辦事項
-        window.addTodo = async function() {
+        window.addTodo = async function () {
             const text = document.getElementById('newTodoText').value.trim();
             if (!text) return;
 
             const note = document.getElementById('newTodoNote').value.trim();
             let section = window.currentAddSection;
-            
+
             if (section === 'weekly' || section === 'nextweek') {
                 section = window.selectedDay;
             }
@@ -1299,11 +1305,11 @@
         };
 
         // 標記重要
-        window.toggleImportant = async function(id) {
+        window.toggleImportant = async function (id) {
             const userId = window.currentUser.uid;
             const todoRef = ref(database, `users/${userId}/todos/${id}`);
             const snapshot = await get(todoRef);
-            
+
             if (snapshot.exists()) {
                 const todo = snapshot.val();
                 await set(todoRef, {
@@ -1314,12 +1320,12 @@
         };
 
         // 顯示編輯待辦事項 Modal
-        window.showEditModal = async function(id) {
+        window.showEditModal = async function (id) {
             window.currentEditingTodoId = id;
             const userId = window.currentUser.uid;
             const todoRef = ref(database, `users/${userId}/todos/${id}`);
             const snapshot = await get(todoRef);
-            
+
             if (snapshot.exists()) {
                 const todo = snapshot.val();
                 document.getElementById('editTodoText').value = todo.text || '';
@@ -1329,13 +1335,13 @@
         };
 
         // 關閉編輯待辦事項 Modal
-        window.closeEditModal = function() {
+        window.closeEditModal = function () {
             document.getElementById('editModal').classList.remove('active');
             window.currentEditingTodoId = null;
         };
 
         // 儲存編輯的待辦事項
-        window.saveEditTodo = async function() {
+        window.saveEditTodo = async function () {
             const newText = document.getElementById('editTodoText').value.trim();
             if (!newText) {
                 alert('待辦事項不能為空');
@@ -1347,7 +1353,7 @@
             const userId = window.currentUser.uid;
             const todoRef = ref(database, `users/${userId}/todos/${id}`);
             const snapshot = await get(todoRef);
-            
+
             if (snapshot.exists()) {
                 const todo = snapshot.val();
                 await set(todoRef, {
@@ -1361,7 +1367,7 @@
         };
 
         // 刪除待辦事項
-        window.deleteTodo = async function(id) {
+        window.deleteTodo = async function (id) {
             if (!confirm('是否確定刪除？')) return;
 
             const userId = window.currentUser.uid;
@@ -1388,23 +1394,35 @@
         }
 
         // 為所有可放置區域添加拖曳事件
-        document.addEventListener('DOMContentLoaded', () => {
-            const dropZones = document.querySelectorAll('.todo-list, .day-column');
-            
+        function initializeDragAndDrop() {
+            // 移除舊的事件監聽器（如果有的話）
+            const dropZones = document.querySelectorAll('.todo-list, .day-column, .section');
+
             dropZones.forEach(zone => {
+                // 移除舊的監聽器
+                zone.removeEventListener('dragover', handleDragOver);
+                zone.removeEventListener('drop', handleDrop);
+                zone.removeEventListener('dragleave', handleDragLeave);
+
+                // 添加新的監聽器
                 zone.addEventListener('dragover', handleDragOver);
                 zone.addEventListener('drop', handleDrop);
                 zone.addEventListener('dragleave', handleDragLeave);
             });
+        }
+
+        // 初始化時綁定事件
+        document.addEventListener('DOMContentLoaded', () => {
+            initializeDragAndDrop();
         });
 
         function getDragAfterElement(container, y) {
             const draggableElements = [...container.querySelectorAll('.todo-item:not(.dragging)')];
-            
+
             return draggableElements.reduce((closest, child) => {
                 const box = child.getBoundingClientRect();
                 const offset = y - box.top - box.height / 2;
-                
+
                 if (offset < 0 && offset > closest.offset) {
                     return { offset: offset, element: child };
                 } else {
@@ -1416,28 +1434,34 @@
         function handleDragOver(e) {
             e.preventDefault();
             e.dataTransfer.dropEffect = 'move';
-            
-            const container = this.classList.contains('day-column') ? 
-                this.querySelector('.todo-list') : this;
-            
+
+            let container;
+            if (this.classList.contains('day-column')) {
+                container = this.querySelector('.todo-list');
+            } else if (this.classList.contains('section')) {
+                container = this.querySelector('.todo-list');
+            } else if (this.classList.contains('todo-list')) {
+                container = this;
+            }
+
             if (container) {
                 afterElement = getDragAfterElement(container, e.clientY);
-                
+
                 // 移除所有舊的標記
                 document.querySelectorAll('.todo-item').forEach(item => {
                     item.classList.remove('drag-after');
                 });
-                
+
                 // 添加新標記
                 if (afterElement) {
                     afterElement.classList.add('drag-after');
                 }
             }
-            
+
             if (this.classList.contains('day-column')) {
                 this.classList.add('drag-over');
             }
-            
+
             return false;
         }
 
@@ -1467,23 +1491,27 @@
             } else if (this.classList.contains('todo-list')) {
                 newSection = this.id;
                 container = this;
+            } else if (this.classList.contains('section')) {
+                // 處理拖曳到 .section 元素（others, private, focus）
+                newSection = this.dataset.section;
+                container = this.querySelector('.todo-list');
             }
 
             if (newSection && container) {
                 const userId = window.currentUser.uid;
                 const todoRef = ref(database, `users/${userId}/todos/${todoId}`);
                 const snapshot = await get(todoRef);
-                
+
                 if (snapshot.exists()) {
                     const todo = snapshot.val();
-                    
+
                     // 計算新的 order 值
                     let newOrder;
                     if (afterElement) {
                         const afterId = afterElement.dataset.id;
                         const afterTodoRef = ref(database, `users/${userId}/todos/${afterId}`);
                         const afterSnapshot = await get(afterTodoRef);
-                        
+
                         if (afterSnapshot.exists()) {
                             const afterTodo = afterSnapshot.val();
                             // 獲取前一個元素（排除正在拖曳的元素）
@@ -1492,7 +1520,7 @@
                             while (beforeElement && beforeElement === draggedElement) {
                                 beforeElement = beforeElement.previousElementSibling;
                             }
-                            
+
                             if (beforeElement) {
                                 const beforeId = beforeElement.dataset.id;
                                 const beforeTodoRef = ref(database, `users/${userId}/todos/${beforeId}`);
@@ -1528,7 +1556,7 @@
                             newOrder = Date.now();
                         }
                     }
-                    
+
                     await set(todoRef, {
                         ...todo,
                         section: newSection,
@@ -1558,5 +1586,5 @@
         });
     </script>
 </body>
-</html>
 
+</html>
