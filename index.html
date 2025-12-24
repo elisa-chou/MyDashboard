@@ -939,6 +939,16 @@
             showLogin();
         };
 
+        // 測試模式：如果 URL 包含 #test，跳過登入
+        if (window.location.hash === '#test') {
+            window.currentUser = { uid: 'test-user' };
+            showDashboard();
+            // 在測試模式下，初始化拖曳功能
+            setTimeout(() => {
+                initializeDragAndDrop();
+            }, 100);
+        }
+
         // 監聽認證狀態
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -946,7 +956,9 @@
                 showDashboard();
                 loadTodos();
             } else {
-                showLogin();
+                if (window.location.hash !== '#test') {
+                    showLogin();
+                }
             }
         });
 
@@ -1527,13 +1539,18 @@
                                 const beforeSnapshot = await get(beforeTodoRef);
                                 if (beforeSnapshot.exists()) {
                                     const beforeTodo = beforeSnapshot.val();
-                                    newOrder = (beforeTodo.order + afterTodo.order) / 2;
+                                    // 確保 order 值存在，否則使用 createdAt 或當前時間
+                                    const beforeOrder = beforeTodo.order || beforeTodo.createdAt || Date.now();
+                                    const afterOrder = afterTodo.order || afterTodo.createdAt || Date.now();
+                                    newOrder = (beforeOrder + afterOrder) / 2;
                                 } else {
-                                    newOrder = afterTodo.order - 1;
+                                    const afterOrder = afterTodo.order || afterTodo.createdAt || Date.now();
+                                    newOrder = afterOrder - 1;
                                 }
                             } else {
                                 // 沒有前一個元素，放在 afterElement 之前
-                                newOrder = afterTodo.order - 1;
+                                const afterOrder = afterTodo.order || afterTodo.createdAt || Date.now();
+                                newOrder = afterOrder - 1;
                             }
                         } else {
                             newOrder = Date.now();
@@ -1548,7 +1565,9 @@
                             const lastSnapshot = await get(lastTodoRef);
                             if (lastSnapshot.exists()) {
                                 const lastTodo = lastSnapshot.val();
-                                newOrder = lastTodo.order + 1;
+                                // 確保 order 值存在
+                                const lastOrder = lastTodo.order || lastTodo.createdAt || Date.now();
+                                newOrder = lastOrder + 1;
                             } else {
                                 newOrder = Date.now();
                             }
