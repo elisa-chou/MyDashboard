@@ -260,10 +260,6 @@
             background: linear-gradient(135deg, rgba(60, 40, 20, 0.9) 0%, rgba(80, 60, 30, 0.9) 100%);
         }
 
-        .section.private {
-            background: linear-gradient(135deg, rgba(60, 20, 40, 0.9) 0%, rgba(80, 30, 60, 0.9) 100%);
-        }
-
         .section.focus {
             background: linear-gradient(135deg, rgba(20, 50, 30, 0.9) 0%, rgba(30, 70, 40, 0.9) 100%);
         }
@@ -670,17 +666,13 @@
                 order: 2;
             }
 
-            .section.private {
-                order: 3;
-            }
-
             .section.focus {
-                order: 4;
+                order: 3;
             }
 
             .section.nextweek {
                 grid-row: auto;
-                order: 5;
+                order: 4;
             }
         }
 
@@ -821,28 +813,19 @@
                 </div>
             </div>
 
-            <!-- 區塊 3: 其他待辦 -->
+            <!-- 區塊 3: 行李箱 -->
             <div class="section others" data-section="others">
                 <div class="section-header">
-                    <h2 class="section-title">✨ 其他雜物</h2>
+                    <h2 class="section-title">🧳 行李箱</h2>
                     <button class="add-btn" onclick="showAddModal('others')">+</button>
                 </div>
                 <div class="todo-list" id="others"></div>
             </div>
 
-            <!-- 區塊 4: 私人待辦 -->
-            <div class="section private" data-section="private">
-                <div class="section-header">
-                    <h2 class="section-title">🧙 私人日記</h2>
-                    <button class="add-btn" onclick="showAddModal('private')">+</button>
-                </div>
-                <div class="todo-list" id="private"></div>
-            </div>
-
-            <!-- 區塊 5: 近期關注 -->
+            <!-- 區塊 4: 魔法研究 -->
             <div class="section focus" data-section="focus">
                 <div class="section-header">
-                    <h2 class="section-title">⚡ 魔法研究</h2>
+                    <h2 class="section-title">🧙 魔法研究</h2>
                     <button class="add-btn" onclick="showAddModal('focus')">+</button>
                 </div>
                 <div class="todo-list" id="focus"></div>
@@ -985,7 +968,7 @@
                 // 清空所有列表
                 const sections = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday',
                     'next_monday', 'next_tuesday', 'next_wednesday', 'next_thursday', 'next_friday',
-                    'others', 'private', 'focus'];
+                    'others', 'focus'];
                 sections.forEach(section => {
                     const container = document.getElementById(section);
                     if (container) container.innerHTML = '';
@@ -1208,8 +1191,8 @@
             todoDiv.innerHTML = `
                 <span class="drag-handle">⋮⋮</span>
                 <div class="todo-content">
-                    <div class="todo-text">${escapeHtml(todo.text)}</div>
-                    ${todo.note ? `<div class="note-text">📝 ${escapeHtml(todo.note)}</div>` : ''}
+                    <div class="todo-text">${linkifyUrls(todo.text)}</div>
+                    ${todo.note ? `<div class="note-text">📝 ${linkifyUrls(todo.note)}</div>` : ''}
                 </div>
                 <div class="todo-actions">
                     <button class="action-btn" onclick="showEditModal('${id}')" title="編輯">⋯</button>
@@ -1597,6 +1580,18 @@
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
+        }
+
+        // 將文本中的 URL 轉換為超連結
+        function linkifyUrls(text) {
+            // URL 正則表達式
+            const urlRegex = /(https?:\/\/[^\s]+)/g;
+            // 先轉義 HTML
+            const escapedText = escapeHtml(text);
+            // 將 URL 替換為超連結
+            return escapedText.replace(urlRegex, function(url) {
+                return '<a href="' + url + '" target="_blank" style="color: #daa520; text-decoration: underline;">' + url + '</a>';
+            });
         }
 
         // 初始化拖曳功能
