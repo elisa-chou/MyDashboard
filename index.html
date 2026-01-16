@@ -1373,9 +1373,18 @@
         // 拖曳處理
         let draggedElement = null;
         let afterElement = null;
+        let dropSuccessful = false;
+        let originalParent = null;
+        let originalNextSibling = null;
 
         function handleDragStart(e) {
             draggedElement = this;
+            dropSuccessful = false;
+            
+            // 記錄原始位置
+            originalParent = this.parentElement;
+            originalNextSibling = this.nextElementSibling;
+            
             this.classList.add('dragging');
             e.dataTransfer.effectAllowed = 'move';
             e.dataTransfer.setData('text/html', this.innerHTML);
@@ -1386,6 +1395,18 @@
             document.querySelectorAll('.todo-item').forEach(item => {
                 item.classList.remove('drag-after');
             });
+            
+            // 如果拖曳沒有成功放置，確保元素保持在原位
+            if (!dropSuccessful && originalParent) {
+                // DOM 應該已經保持原樣，但我們確保清理狀態
+                console.log('拖曳未完成，任務保持在原位');
+            }
+            
+            // 重置狀態
+            draggedElement = null;
+            originalParent = null;
+            originalNextSibling = null;
+            dropSuccessful = false;
         }
 
         // 為所有可放置區域添加拖曳事件
@@ -1475,6 +1496,9 @@
             }
 
             if (!draggedElement) return;
+            
+            // 標記拖曳成功
+            dropSuccessful = true;
 
             const todoId = draggedElement.dataset.id;
             let newSection;
