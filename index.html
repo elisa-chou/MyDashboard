@@ -1343,26 +1343,35 @@
             if (!dropSuccessful) {
                 console.log('拖曳未完成，恢復任務到原位');
                 
-                // 如果元素不在原始父容器中，將其恢復
-                if (originalParent && draggedElement) {
-                    // 檢查元素是否還在 DOM 中
-                    if (!draggedElement.parentElement) {
-                        // 元素已從 DOM 中移除，需要恢復
-                        if (originalNextSibling && originalNextSibling.parentElement === originalParent) {
-                            originalParent.insertBefore(draggedElement, originalNextSibling);
+                // 保存元素引用，因為後面會將 draggedElement 設為 null
+                const elementToRestore = draggedElement;
+                const targetParent = originalParent;
+                const targetNextSibling = originalNextSibling;
+                
+                if (targetParent && elementToRestore) {
+                    // 使用 setTimeout 確保在瀏覽器完成拖曳操作後再恢復
+                    setTimeout(() => {
+                        // 檢查元素是否還在 DOM 中
+                        if (!elementToRestore.parentElement) {
+                            // 元素已從 DOM 中移除，需要恢復
+                            if (targetNextSibling && targetNextSibling.parentElement === targetParent) {
+                                targetParent.insertBefore(elementToRestore, targetNextSibling);
+                            } else {
+                                targetParent.appendChild(elementToRestore);
+                            }
+                            console.log('✅ 任務已恢復到原始位置（從 DOM 外）');
+                        } else if (elementToRestore.parentElement !== targetParent) {
+                            // 元素在錯誤的位置，移回原位
+                            if (targetNextSibling && targetNextSibling.parentElement === targetParent) {
+                                targetParent.insertBefore(elementToRestore, targetNextSibling);
+                            } else {
+                                targetParent.appendChild(elementToRestore);
+                            }
+                            console.log('✅ 任務已從錯誤位置恢復到原位');
                         } else {
-                            originalParent.appendChild(draggedElement);
+                            console.log('✅ 任務已在正確位置');
                         }
-                        console.log('任務已恢復到原始位置');
-                    } else if (draggedElement.parentElement !== originalParent) {
-                        // 元素在錯誤的位置，移回原位
-                        if (originalNextSibling && originalNextSibling.parentElement === originalParent) {
-                            originalParent.insertBefore(draggedElement, originalNextSibling);
-                        } else {
-                            originalParent.appendChild(draggedElement);
-                        }
-                        console.log('任務已從錯誤位置恢復到原位');
-                    }
+                    }, 0);
                 }
             }
             
@@ -1389,6 +1398,29 @@
                 zone.addEventListener('drop', handleDrop);
                 zone.addEventListener('dragleave', handleDragLeave);
             });
+
+            // 添加全局事件處理器，防止拖曳到無效區域時的預設行為
+            document.body.removeEventListener('dragover', handleGlobalDragOver);
+            document.body.removeEventListener('drop', handleGlobalDrop);
+            document.body.addEventListener('dragover', handleGlobalDragOver);
+            document.body.addEventListener('drop', handleGlobalDrop);
+        }
+
+        // 全局 dragover 處理器 - 防止預設行為
+        function handleGlobalDragOver(e) {
+            // 允許拖曳到任何地方（但不會觸發 drop）
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'none';
+        }
+
+        // 全局 drop 處理器 - 當拖曳到非 drop zone 時
+        function handleGlobalDrop(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // 不設置 dropSuccessful = true
+            // 讓 handleDragEnd 處理恢復邏輯
+            console.log('拖曳到無效區域，任務將恢復到原位');
         }
 
         // 初始化時綁定事件
@@ -1413,6 +1445,7 @@
 
         function handleDragOver(e) {
             e.preventDefault();
+            e.stopPropagation(); // 阻止事件冒泡到全局處理器
             e.dataTransfer.dropEffect = 'move';
 
             let container;
