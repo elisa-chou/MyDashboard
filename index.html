@@ -1060,7 +1060,11 @@
             const migrationSnapshot = await get(migrationFlagRef);
             
             // 如果已經遷移過，就不再執行
-            if (migrationSnapshot.exists()) return;
+            if (migrationSnapshot.exists()) {
+                // 但仍然執行清理無效 section 的操作（每次都執行）
+                await cleanInvalidSections();
+                return;
+            }
 
             const todosRef = ref(database, `users/${userId}/todos`);
             const snapshot = await get(todosRef);
@@ -1096,6 +1100,43 @@
 
             // 標記為已遷移
             await set(migrationFlagRef, true);
+            
+            // 清理無效的 section
+            await cleanInvalidSections();
+        }
+
+        // 清理無效的 section（每次載入都執行）
+        async function cleanInvalidSections() {
+            if (!window.currentUser) return;
+            
+            const userId = window.currentUser.uid;
+            const todosRef = ref(database, `users/${userId}/todos`);
+            const snapshot = await get(todosRef);
+
+            if (!snapshot.exists()) return;
+
+            const data = snapshot.val();
+            const updatePromises = [];
+
+            // 無效的 section 名稱（包括 prophet, weekly, nextweek 等）
+            const invalidSections = ['prophet', 'weekly', 'nextweek'];
+
+            Object.keys(data).forEach(id => {
+                const todo = data[id];
+                if (invalidSections.includes(todo.section)) {
+                    console.log(`🔧 修復無效的任務: "${todo.text}" (section: ${todo.section} → focus)`);
+                    const todoRef = ref(database, `users/${userId}/todos/${id}`);
+                    updatePromises.push(set(todoRef, {
+                        ...todo,
+                        section: 'focus' // 移至魔法研究
+                    }));
+                }
+            });
+
+            if (updatePromises.length > 0) {
+                await Promise.all(updatePromises);
+                console.log(`✅ 已修復 ${updatePromises.length} 個無效的任務，已移至魔法研究區塊`);
+            }
         }
 
         // 移動過期任務到今天
@@ -1505,9 +1546,17 @@
                 newSection = this.id;
                 container = this;
             } else if (this.classList.contains('section')) {
-                // 處理拖曳到 .section 元素（others, private, focus）
+                // 處理拖曳到 .section 元素（others, focus）
                 newSection = this.dataset.section;
                 container = this.querySelector('.todo-list');
+                
+                // 特殊處理：預言家日報區塊不應該直接拖曳到 section 層級
+                // 必須拖曳到具體的日期欄位（day-column）
+                if (newSection === 'prophet') {
+                    console.log('⚠️ 請將任務拖曳到具體的日期欄位，而不是區塊邊緣');
+                    newSection = null;
+                    container = null;
+                }
             }
 
             if (newSection && container) {
