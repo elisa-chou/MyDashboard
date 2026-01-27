@@ -1339,10 +1339,31 @@
                 item.classList.remove('drag-after');
             });
             
-            // 如果拖曳沒有成功放置，確保元素保持在原位
-            if (!dropSuccessful && originalParent) {
-                // DOM 應該已經保持原樣，但我們確保清理狀態
-                console.log('拖曳未完成，任務保持在原位');
+            // 如果拖曳沒有成功放置，恢復元素到原始位置
+            if (!dropSuccessful) {
+                console.log('拖曳未完成，恢復任務到原位');
+                
+                // 如果元素不在原始父容器中，將其恢復
+                if (originalParent && draggedElement) {
+                    // 檢查元素是否還在 DOM 中
+                    if (!draggedElement.parentElement) {
+                        // 元素已從 DOM 中移除，需要恢復
+                        if (originalNextSibling && originalNextSibling.parentElement === originalParent) {
+                            originalParent.insertBefore(draggedElement, originalNextSibling);
+                        } else {
+                            originalParent.appendChild(draggedElement);
+                        }
+                        console.log('任務已恢復到原始位置');
+                    } else if (draggedElement.parentElement !== originalParent) {
+                        // 元素在錯誤的位置，移回原位
+                        if (originalNextSibling && originalNextSibling.parentElement === originalParent) {
+                            originalParent.insertBefore(draggedElement, originalNextSibling);
+                        } else {
+                            originalParent.appendChild(draggedElement);
+                        }
+                        console.log('任務已從錯誤位置恢復到原位');
+                    }
+                }
             }
             
             // 重置狀態
@@ -1439,9 +1460,6 @@
             }
 
             if (!draggedElement) return;
-            
-            // 標記拖曳成功
-            dropSuccessful = true;
 
             const todoId = draggedElement.dataset.id;
             let newSection;
@@ -1460,6 +1478,8 @@
             }
 
             if (newSection && container) {
+                // 只有在找到有效的目標位置時才標記為成功
+                dropSuccessful = true;
                 const userId = window.currentUser.uid;
                 const todoRef = ref(database, `users/${userId}/todos/${todoId}`);
                 const snapshot = await get(todoRef);
