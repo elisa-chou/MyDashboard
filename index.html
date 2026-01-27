@@ -246,14 +246,9 @@
             border-color: rgba(218, 165, 32, 0.6);
         }
 
-        .section.weekly {
-            grid-row: 1 / 3;
+        .section.prophet {
+            grid-row: 1 / 5;
             background: linear-gradient(135deg, rgba(20, 30, 60, 0.9) 0%, rgba(40, 50, 90, 0.9) 100%);
-        }
-
-        .section.nextweek {
-            grid-row: 3 / 5;
-            background: linear-gradient(135deg, rgba(50, 20, 60, 0.9) 0%, rgba(70, 30, 80, 0.9) 100%);
         }
 
         .section.others {
@@ -469,8 +464,13 @@
             word-break: break-word;
             word-wrap: break-word;
             overflow-wrap: break-word;
-            white-space: normal;
+            white-space: pre-wrap;
             max-width: 100%;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .todo-actions {
@@ -626,7 +626,7 @@
         }
 
         .day-button {
-            padding: 10px 20px;
+            padding: 10px 15px;
             background: rgba(0, 0, 0, 0.4);
             border: 2px solid rgba(218, 165, 32, 0.4);
             border-radius: 8px;
@@ -634,7 +634,8 @@
             cursor: pointer;
             transition: all 0.3s;
             font-family: 'Cormorant Garamond', serif;
-            font-size: 1rem;
+            font-size: 0.95rem;
+            white-space: nowrap;
         }
 
         .day-button:hover {
@@ -657,7 +658,7 @@
                 flex-direction: column;
             }
 
-            .section.weekly {
+            .section.prophet {
                 grid-row: auto;
                 order: 1;
             }
@@ -668,11 +669,6 @@
 
             .section.focus {
                 order: 3;
-            }
-
-            .section.nextweek {
-                grid-row: auto;
-                order: 4;
             }
         }
 
@@ -744,76 +740,20 @@
         </div>
 
         <div class="dashboard-grid">
-            <!-- 區塊 1: 當周待辦 -->
-            <div class="section weekly" data-section="weekly" id="currentWeekSection">
+            <!-- 區塊 1: 預言家日報 -->
+            <div class="section prophet" data-section="prophet" id="prophetSection">
                 <div class="section-header">
-                    <h2 class="section-title">📜 當週任務</h2>
+                    <h2 class="section-title">🔮 預言家日報</h2>
                     <div class="week-controls">
-                        <input type="date" class="date-picker" id="currentWeekPicker"
-                            onchange="updateWeekDates('current')">
-                        <button class="clear-btn" onclick="clearWeek('current')">清空</button>
-                        <button class="add-btn" onclick="showAddModal('weekly')">+</button>
+                        <button class="add-btn" onclick="showAddModal('prophet')">+</button>
                     </div>
                 </div>
-                <div class="weekly-grid">
-                    <div class="day-column" data-day="monday">
-                        <div class="day-title" id="current-monday">週一</div>
-                        <div class="todo-list" id="monday"></div>
-                    </div>
-                    <div class="day-column" data-day="tuesday">
-                        <div class="day-title" id="current-tuesday">週二</div>
-                        <div class="todo-list" id="tuesday"></div>
-                    </div>
-                    <div class="day-column" data-day="wednesday">
-                        <div class="day-title" id="current-wednesday">週三</div>
-                        <div class="todo-list" id="wednesday"></div>
-                    </div>
-                    <div class="day-column" data-day="thursday">
-                        <div class="day-title" id="current-thursday">週四</div>
-                        <div class="todo-list" id="thursday"></div>
-                    </div>
-                    <div class="day-column" data-day="friday">
-                        <div class="day-title" id="current-friday">週五</div>
-                        <div class="todo-list" id="friday"></div>
-                    </div>
+                <div class="weekly-grid" id="prophetGrid">
+                    <!-- 10 個工作天的欄位將由 JavaScript 動態生成 -->
                 </div>
             </div>
 
-            <!-- 區塊 2: 下周待辦 -->
-            <div class="section nextweek" data-section="nextweek" id="nextWeekSection">
-                <div class="section-header">
-                    <h2 class="section-title">📜 下週預言</h2>
-                    <div class="week-controls">
-                        <input type="date" class="date-picker" id="nextWeekPicker" onchange="updateWeekDates('next')">
-                        <button class="clear-btn" onclick="clearWeek('next')">清空</button>
-                        <button class="add-btn" onclick="showAddModal('nextweek')">+</button>
-                    </div>
-                </div>
-                <div class="weekly-grid">
-                    <div class="day-column" data-day="next_monday">
-                        <div class="day-title" id="next-monday">週一</div>
-                        <div class="todo-list" id="next_monday"></div>
-                    </div>
-                    <div class="day-column" data-day="next_tuesday">
-                        <div class="day-title" id="next-tuesday">週二</div>
-                        <div class="todo-list" id="next_tuesday"></div>
-                    </div>
-                    <div class="day-column" data-day="next_wednesday">
-                        <div class="day-title" id="next-wednesday">週三</div>
-                        <div class="todo-list" id="next_wednesday"></div>
-                    </div>
-                    <div class="day-column" data-day="next_thursday">
-                        <div class="day-title" id="next-thursday">週四</div>
-                        <div class="todo-list" id="next_thursday"></div>
-                    </div>
-                    <div class="day-column" data-day="next_friday">
-                        <div class="day-title" id="next-friday">週五</div>
-                        <div class="todo-list" id="next_friday"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- 區塊 3: 行李箱 -->
+            <!-- 區塊 2: 行李箱 -->
             <div class="section others" data-section="others">
                 <div class="section-header">
                     <h2 class="section-title">🧳 行李箱</h2>
@@ -822,7 +762,7 @@
                 <div class="todo-list" id="others"></div>
             </div>
 
-            <!-- 區塊 4: 魔法研究 -->
+            <!-- 區塊 3: 魔法研究 -->
             <div class="section focus" data-section="focus">
                 <div class="section-header">
                     <h2 class="section-title">🧙 魔法研究</h2>
@@ -893,6 +833,8 @@
         window.currentEditingId = null;
         window.currentAddSection = null;
         window.currentEditingTodoId = null;
+        window.workingDays = []; // 儲存10個工作天的日期
+        window.expiredTasksMoved = false; // 標記是否已移動過期任務
 
         // 登入函數
         window.login = async function () {
@@ -930,6 +872,23 @@
             setTimeout(() => {
                 initializeDragAndDrop();
             }, 100);
+            
+            // 測試模式也需要檢查日期變更
+            setInterval(() => {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const firstDay = window.workingDays[0];
+                if (firstDay) {
+                    const firstDayDate = new Date(firstDay);
+                    firstDayDate.setHours(0, 0, 0, 0);
+                    
+                    if (firstDayDate.getTime() !== today.getTime()) {
+                        console.log('日期已改變，重新生成工作天');
+                        window.expiredTasksMoved = false;
+                        generateWorkingDays();
+                    }
+                }
+            }, 3600000);
         }
 
         // 監聽認證狀態
@@ -938,6 +897,25 @@
                 window.currentUser = user;
                 showDashboard();
                 loadTodos();
+                
+                // 每小時檢查一次是否需要更新日期（以防跨日）
+                setInterval(() => {
+                    const today = new Date();
+                    today.setHours(0, 0, 0, 0);
+                    const firstDay = window.workingDays[0];
+                    if (firstDay) {
+                        const firstDayDate = new Date(firstDay);
+                        firstDayDate.setHours(0, 0, 0, 0);
+                        
+                        // 如果第一天不是今天，重新生成工作天
+                        if (firstDayDate.getTime() !== today.getTime()) {
+                            console.log('日期已改變，重新生成工作天');
+                            window.expiredTasksMoved = false; // 重置標記
+                            generateWorkingDays();
+                            loadTodos();
+                        }
+                    }
+                }, 3600000); // 每小時檢查一次
             } else {
                 if (window.location.hash !== '#test') {
                     showLogin();
@@ -955,24 +933,94 @@
         function showDashboard() {
             document.getElementById('loginContainer').style.display = 'none';
             document.getElementById('dashboardContainer').classList.add('active');
+            generateWorkingDays();
+        }
+
+        // 計算從今天開始的10個工作天（排除週六日）
+        function calculateWorkingDays() {
+            const days = [];
+            let currentDate = new Date();
+            currentDate.setHours(0, 0, 0, 0); // 重置時間為當天00:00
+
+            while (days.length < 10) {
+                const dayOfWeek = currentDate.getDay();
+                // 0 = 週日, 6 = 週六
+                if (dayOfWeek !== 0 && dayOfWeek !== 6) {
+                    days.push(new Date(currentDate));
+                }
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+
+            return days;
+        }
+
+        // 格式化日期為 YYYY-MM-DD
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+
+        // 格式化日期顯示為 M/D (週X)
+        function formatDateDisplay(date) {
+            const month = date.getMonth() + 1;
+            const day = date.getDate();
+            const dayNames = ['週日', '週一', '週二', '週三', '週四', '週五', '週六'];
+            const dayName = dayNames[date.getDay()];
+            return `${month}/${day} (${dayName})`;
+        }
+
+        // 生成10個工作天的欄位
+        function generateWorkingDays() {
+            window.workingDays = calculateWorkingDays();
+            const prophetGrid = document.getElementById('prophetGrid');
+            prophetGrid.innerHTML = '';
+
+            window.workingDays.forEach((date, index) => {
+                const dateStr = formatDate(date);
+                const displayStr = formatDateDisplay(date);
+
+                const dayColumn = document.createElement('div');
+                dayColumn.className = 'day-column';
+                dayColumn.dataset.day = dateStr;
+
+                dayColumn.innerHTML = `
+                    <div class="day-title">${displayStr}</div>
+                    <div class="todo-list" id="${dateStr}"></div>
+                `;
+
+                prophetGrid.appendChild(dayColumn);
+            });
+
+            // 重新初始化拖曳功能
+            setTimeout(() => {
+                initializeDragAndDrop();
+            }, 100);
         }
 
         // 載入所有待辦事項
-        function loadTodos() {
+        async function loadTodos() {
             if (!window.currentUser) return;
 
             const userId = window.currentUser.uid;
             const todosRef = ref(database, `users/${userId}/todos`);
 
-            onValue(todosRef, (snapshot) => {
+            // 先執行數據遷移（只執行一次）
+            await migrateOldTodos();
+
+            onValue(todosRef, async (snapshot) => {
                 // 清空所有列表
-                const sections = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday',
-                    'next_monday', 'next_tuesday', 'next_wednesday', 'next_thursday', 'next_friday',
-                    'others', 'focus'];
-                sections.forEach(section => {
-                    const container = document.getElementById(section);
+                window.workingDays.forEach(date => {
+                    const dateStr = formatDate(date);
+                    const container = document.getElementById(dateStr);
                     if (container) container.innerHTML = '';
                 });
+                
+                const othersContainer = document.getElementById('others');
+                const focusContainer = document.getElementById('focus');
+                if (othersContainer) othersContainer.innerHTML = '';
+                if (focusContainer) focusContainer.innerHTML = '';
 
                 const data = snapshot.val();
                 if (data) {
@@ -989,199 +1037,110 @@
                         return orderA - orderB;
                     });
 
+                    // 移動過期任務到今天（只在初次載入時執行）
+                    if (!window.expiredTasksMoved) {
+                        await moveExpiredTasksToToday(todosArray);
+                        window.expiredTasksMoved = true;
+                    }
+
                     // 依序渲染
                     todosArray.forEach(todo => {
                         renderTodo(todo.id, todo);
                     });
                 }
             });
-
-            // 載入儲存的日期
-            loadWeekDates();
         }
 
-        // 更新週間日期顯示
-        window.updateWeekDates = function (weekType) {
-            const picker = document.getElementById(weekType === 'current' ? 'currentWeekPicker' : 'nextWeekPicker');
-            const selectedDate = new Date(picker.value);
-
-            if (isNaN(selectedDate.getTime())) return;
-
-            // 計算該週的週一
-            const dayOfWeek = selectedDate.getDay();
-            const diff = dayOfWeek === 0 ? -6 : 1 - dayOfWeek; // 如果是週日，往回推6天
-            const monday = new Date(selectedDate);
-            monday.setDate(selectedDate.getDate() + diff);
-
-            // 更新週一到週五的日期顯示
-            const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
-            const dayNames = ['週一', '週二', '週三', '週四', '週五'];
-            const prefix = weekType === 'current' ? 'current' : 'next';
-
-            for (let i = 0; i < 5; i++) {
-                const date = new Date(monday);
-                date.setDate(monday.getDate() + i);
-                const dateStr = `${date.getMonth() + 1}/${date.getDate()}`;
-                document.getElementById(`${prefix}-${days[i]}`).textContent = `${dayNames[i]} (${dateStr})`;
-            }
-
-            // 儲存日期到資料庫
-            saveWeekDate(weekType, monday.toISOString());
-        };
-
-        // 清空週間所有待辦
-        window.clearWeek = async function (weekType) {
-            if (!confirm(`確定要清空${weekType === 'current' ? '當周' : '下周'}待辦的所有內容嗎？`)) return;
-
+        // 數據遷移：將舊的週間任務移至「魔法研究」
+        async function migrateOldTodos() {
             if (!window.currentUser) return;
+            
             const userId = window.currentUser.uid;
-
-            // 決定要清空的 sections
-            const sections = weekType === 'current'
-                ? ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
-                : ['next_monday', 'next_tuesday', 'next_wednesday', 'next_thursday', 'next_friday'];
-
-            // 獲取所有待辦事項
-            const todosRef = ref(database, `users/${userId}/todos`);
-            const snapshot = await get(todosRef);
-
-            if (snapshot.exists()) {
-                const data = snapshot.val();
-                const deletePromises = [];
-
-                // 刪除屬於該週的所有待辦事項
-                Object.keys(data).forEach(id => {
-                    if (sections.includes(data[id].section)) {
-                        const todoRef = ref(database, `users/${userId}/todos/${id}`);
-                        deletePromises.push(remove(todoRef));
-                    }
-                });
-
-                await Promise.all(deletePromises);
-            }
-
-            // 清除日期顯示
-            const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
-            const dayNames = ['週一', '週二', '週三', '週四', '週五'];
-            const prefix = weekType === 'current' ? 'current' : 'next';
-
-            for (let i = 0; i < 5; i++) {
-                document.getElementById(`${prefix}-${days[i]}`).textContent = dayNames[i];
-            }
-
-            // 清除日期選擇器
-            const picker = document.getElementById(weekType === 'current' ? 'currentWeekPicker' : 'nextWeekPicker');
-            picker.value = '';
-
-            // 刪除儲存的日期
-            const dateRef = ref(database, `users/${userId}/weekDates/${weekType}`);
-            await remove(dateRef);
-
-            // 如果是清空當周，將下周移至當周
-            if (weekType === 'current') {
-                await moveNextWeekToCurrent();
-            }
-        };
-
-        // 將下周待辦移至當周
-        async function moveNextWeekToCurrent() {
-            if (!window.currentUser) return;
-            const userId = window.currentUser.uid;
+            const migrationFlagRef = ref(database, `users/${userId}/migrated`);
+            const migrationSnapshot = await get(migrationFlagRef);
+            
+            // 如果已經遷移過，就不再執行
+            if (migrationSnapshot.exists()) return;
 
             const todosRef = ref(database, `users/${userId}/todos`);
             const snapshot = await get(todosRef);
 
-            if (!snapshot.exists()) return;
+            if (!snapshot.exists()) {
+                // 即使沒有資料，也標記為已遷移
+                await set(migrationFlagRef, true);
+                return;
+            }
 
             const data = snapshot.val();
             const updatePromises = [];
 
-            // 找出所有下周的待辦事項，改為當周
-            const nextWeekMap = {
-                'next_monday': 'monday',
-                'next_tuesday': 'tuesday',
-                'next_wednesday': 'wednesday',
-                'next_thursday': 'thursday',
-                'next_friday': 'friday'
-            };
+            // 舊的 section 名稱
+            const oldSections = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday',
+                'next_monday', 'next_tuesday', 'next_wednesday', 'next_thursday', 'next_friday'];
 
             Object.keys(data).forEach(id => {
                 const todo = data[id];
-                if (nextWeekMap[todo.section]) {
+                if (oldSections.includes(todo.section)) {
                     const todoRef = ref(database, `users/${userId}/todos/${id}`);
                     updatePromises.push(set(todoRef, {
                         ...todo,
-                        section: nextWeekMap[todo.section]
+                        section: 'focus' // 移至魔法研究
                     }));
                 }
             });
 
-            await Promise.all(updatePromises);
-
-            // 移動日期顯示
-            const nextWeekPicker = document.getElementById('nextWeekPicker');
-            const currentWeekPicker = document.getElementById('currentWeekPicker');
-
-            if (nextWeekPicker.value) {
-                currentWeekPicker.value = nextWeekPicker.value;
-                updateWeekDates('current');
-
-                // 清空下周日期
-                nextWeekPicker.value = '';
-                const days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday'];
-                const dayNames = ['週一', '週二', '週三', '週四', '週五'];
-                for (let i = 0; i < 5; i++) {
-                    document.getElementById(`next-${days[i]}`).textContent = dayNames[i];
-                }
-
-                // 更新儲存的日期
-                const nextDateRef = ref(database, `users/${userId}/weekDates/next`);
-                const nextDateSnapshot = await get(nextDateRef);
-                if (nextDateSnapshot.exists()) {
-                    const dateValue = nextDateSnapshot.val();
-                    const currentDateRef = ref(database, `users/${userId}/weekDates/current`);
-                    await set(currentDateRef, dateValue);
-                    await remove(nextDateRef);
-                }
+            if (updatePromises.length > 0) {
+                await Promise.all(updatePromises);
+                console.log(`已將 ${updatePromises.length} 個舊任務移至魔法研究區塊`);
             }
+
+            // 標記為已遷移
+            await set(migrationFlagRef, true);
         }
 
-        // 儲存週間日期
-        async function saveWeekDate(weekType, dateValue) {
+        // 移動過期任務到今天
+        async function moveExpiredTasksToToday(todosArray) {
             if (!window.currentUser) return;
+            if (window.workingDays.length === 0) return;
+
             const userId = window.currentUser.uid;
-            const dateRef = ref(database, `users/${userId}/weekDates/${weekType}`);
-            await set(dateRef, dateValue);
+            const today = formatDate(window.workingDays[0]);
+            const updatePromises = [];
+
+            todosArray.forEach(todo => {
+                // 檢查是否為日期格式的 section (YYYY-MM-DD)
+                if (/^\d{4}-\d{2}-\d{2}$/.test(todo.section)) {
+                    const todoDate = new Date(todo.section);
+                    const todayDate = new Date(today);
+                    
+                    // 如果任務日期早於今天，移至今天
+                    if (todoDate < todayDate) {
+                        const todoRef = ref(database, `users/${userId}/todos/${todo.id}`);
+                        updatePromises.push(set(todoRef, {
+                            ...todo,
+                            section: today
+                        }));
+                    }
+                }
+            });
+
+            if (updatePromises.length > 0) {
+                await Promise.all(updatePromises);
+                console.log(`已將 ${updatePromises.length} 個過期任務移至今天`);
+            }
         }
 
-        // 載入週間日期
-        async function loadWeekDates() {
-            if (!window.currentUser) return;
-            const userId = window.currentUser.uid;
-
-            // 載入當周日期
-            const currentDateRef = ref(database, `users/${userId}/weekDates/current`);
-            const currentSnapshot = await get(currentDateRef);
-            if (currentSnapshot.exists()) {
-                const monday = new Date(currentSnapshot.val());
-                document.getElementById('currentWeekPicker').value = monday.toISOString().split('T')[0];
-                updateWeekDates('current');
-            }
-
-            // 載入下周日期
-            const nextDateRef = ref(database, `users/${userId}/weekDates/next`);
-            const nextSnapshot = await get(nextDateRef);
-            if (nextSnapshot.exists()) {
-                const monday = new Date(nextSnapshot.val());
-                document.getElementById('nextWeekPicker').value = monday.toISOString().split('T')[0];
-                updateWeekDates('next');
-            }
-        }
+        // 舊的日期選擇功能已移除，因為現在使用自動日期顯示
 
         // 渲染待辦事項
         function renderTodo(id, todo) {
+            // 容器可能是日期格式(YYYY-MM-DD)或其他section名稱(others, focus)
             const container = document.getElementById(todo.section);
-            if (!container) return;
+            if (!container) {
+                // 如果找不到容器，可能是過期的日期，跳過渲染
+                console.log(`找不到容器: ${todo.section}`);
+                return;
+            }
 
             const todoDiv = document.createElement('div');
             todoDiv.className = `todo-item ${todo.important ? 'important' : ''}`;
@@ -1215,47 +1174,31 @@
             const modal = document.getElementById('addModal');
             const dayButtonGroup = document.getElementById('dayButtonGroup');
 
-            if (section === 'weekly') {
+            if (section === 'prophet') {
                 dayButtonGroup.classList.remove('hidden');
-                dayButtonGroup.innerHTML = `
-                    <button class="day-button" data-day="monday">一</button>
-                    <button class="day-button" data-day="tuesday">二</button>
-                    <button class="day-button" data-day="wednesday">三</button>
-                    <button class="day-button" data-day="thursday">四</button>
-                    <button class="day-button" data-day="friday">五</button>
-                `;
+                dayButtonGroup.innerHTML = '';
 
-                // 添加按鈕點擊事件
-                dayButtonGroup.querySelectorAll('.day-button').forEach(btn => {
-                    btn.addEventListener('click', function () {
+                // 顯示最近5個工作天
+                const first5Days = window.workingDays.slice(0, 5);
+                first5Days.forEach((date, index) => {
+                    const dateStr = formatDate(date);
+                    const displayStr = formatDateDisplay(date);
+                    
+                    const button = document.createElement('button');
+                    button.className = 'day-button';
+                    button.dataset.day = dateStr;
+                    button.textContent = displayStr;
+                    
+                    button.addEventListener('click', function () {
                         dayButtonGroup.querySelectorAll('.day-button').forEach(b => b.classList.remove('selected'));
                         this.classList.add('selected');
                         window.selectedDay = this.dataset.day;
                     });
+                    
+                    dayButtonGroup.appendChild(button);
                 });
 
-                // 預設選擇週一
-                dayButtonGroup.querySelector('.day-button').click();
-            } else if (section === 'nextweek') {
-                dayButtonGroup.classList.remove('hidden');
-                dayButtonGroup.innerHTML = `
-                    <button class="day-button" data-day="next_monday">一</button>
-                    <button class="day-button" data-day="next_tuesday">二</button>
-                    <button class="day-button" data-day="next_wednesday">三</button>
-                    <button class="day-button" data-day="next_thursday">四</button>
-                    <button class="day-button" data-day="next_friday">五</button>
-                `;
-
-                // 添加按鈕點擊事件
-                dayButtonGroup.querySelectorAll('.day-button').forEach(btn => {
-                    btn.addEventListener('click', function () {
-                        dayButtonGroup.querySelectorAll('.day-button').forEach(b => b.classList.remove('selected'));
-                        this.classList.add('selected');
-                        window.selectedDay = this.dataset.day;
-                    });
-                });
-
-                // 預設選擇週一
+                // 預設選擇第一天
                 dayButtonGroup.querySelector('.day-button').click();
             } else {
                 dayButtonGroup.classList.add('hidden');
@@ -1279,7 +1222,7 @@
             const note = document.getElementById('newTodoNote').value.trim();
             let section = window.currentAddSection;
 
-            if (section === 'weekly' || section === 'nextweek') {
+            if (section === 'prophet') {
                 section = window.selectedDay;
             }
 
