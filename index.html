@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-TW" data-theme="spellbook">
 
 <head>
     <meta charset="UTF-8">
@@ -8,701 +8,503 @@
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪄</text></svg>">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:wght@400;600;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Noto+Serif+TC:wght@300;400;500;600;700;900&family=IM+Fell+English+SC&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap');
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        /* ── Palette ── */
+        :root {
+            --parchment-50:  #faf5ea;
+            --parchment-100: #f4ebd4;
+            --parchment-200: #e8dcba;
+            --parchment-300: #d6c498;
+            --parchment-400: #b59d6c;
+            --parchment-500: #8a7147;
+            --midnight-900:  #0b0a1f;
+            --midnight-800:  #141235;
+            --midnight-700:  #1e1b4a;
+            --midnight-600:  #2d2863;
+            --midnight-500:  #403a82;
+            --gold-300:  #f6e6a4;
+            --gold-400:  #ecd279;
+            --gold-500:  #d4af37;
+            --gold-600:  #a8831f;
+            --gold-700:  #6b5310;
+            --amethyst-300: #c7bde0;
+            --amethyst-400: #9a8cc0;
+            --amethyst-500: #6f5f95;
+            --amethyst-600: #534476;
+            --amethyst-700: #3a2e54;
+            --ember-400: #d9a586;
+            --ember-500: #b57a56;
+            --ember-600: #8a5a3d;
+            --moss-400:  #a8b894;
+            --moss-500:  #7a8a5f;
+            --moss-600:  #5a6845;
+            --blood-500: #9a4f5a;
+
+            /* ── Light (parchment) semantic tokens ── */
+            --bg:           var(--parchment-50);
+            --bg-elevated:  var(--parchment-100);
+            --bg-sunken:    #f0e5cb;
+            --surface-ink:  #fffdf4;
+            --fg:           #241c0c;
+            --fg-2:         #4a3a1e;
+            --fg-3:         #7a6537;
+            --fg-4:         var(--parchment-400);
+            --border:       rgba(138,113,71,.28);
+            --border-strong:rgba(138,113,71,.55);
+            --border-ink:   rgba(36,28,12,.08);
+            --accent:       var(--amethyst-500);
+            --accent-fg:    #fffdf4;
+            --accent-soft:  rgba(111,95,149,.14);
+            --gold:         var(--gold-500);
+            --gold-soft:    rgba(212,175,55,.14);
+            --danger:       var(--blood-500);
+            --cat-prophet:      var(--amethyst-500);
+            --cat-prophet-soft: rgba(111,95,149,.12);
+            --cat-trunk:        var(--ember-500);
+            --cat-trunk-soft:   rgba(181,122,86,.14);
+            --cat-study:        var(--moss-500);
+            --cat-study-soft:   rgba(122,138,95,.14);
+
+            /* ── Typography ── */
+            --font-display: "Cinzel","Noto Serif TC","Songti TC",serif;
+            --font-body:    "Noto Serif TC","Cormorant Garamond","Songti TC",Georgia,serif;
+            --font-incant:  "IM Fell English SC","Cormorant Garamond",serif;
+            --font-mono:    "IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+            --fs-xs:10px; --fs-sm:13px; --fs-base:15px; --fs-md:18px;
+            --fs-lg:22px; --fs-xl:28px; --fs-2xl:36px;
+            --lh-tight:1.15; --lh-snug:1.3; --lh-base:1.55;
+            --ls-wide:.08em; --ls-xwide:.18em;
+
+            /* ── Spacing ── */
+            --sp-1:4px; --sp-2:8px; --sp-3:12px; --sp-4:16px;
+            --sp-5:20px; --sp-6:24px; --sp-7:32px; --sp-8:40px; --sp-9:56px;
+
+            /* ── Radii ── */
+            --r-xs:2px; --r-sm:4px; --r-md:8px; --r-lg:14px; --r-xl:22px; --r-pill:999px;
+
+            /* ── Shadows ── */
+            --shadow-sm: 0 1px 2px rgba(54,40,15,.08),0 1px 1px rgba(54,40,15,.04);
+            --shadow-md: 0 2px 4px rgba(54,40,15,.08),0 6px 14px rgba(54,40,15,.09);
+            --shadow-lg: 0 8px 18px rgba(54,40,15,.12),0 20px 40px rgba(54,40,15,.1);
+            --shadow-ink:inset 0 0 0 1px rgba(36,28,12,.08);
+            --glow-gold:     0 0 0 1px rgba(212,175,55,.55),0 0 24px rgba(212,175,55,.45);
+            --glow-amethyst: 0 0 0 1px rgba(111,95,149,.55),0 0 26px rgba(111,95,149,.4);
+
+            /* ── Motion ── */
+            --ease-stand:  cubic-bezier(.22,.61,.36,1);
+            --ease-magic:  cubic-bezier(.34,1.56,.64,1);
+            --ease-settle: cubic-bezier(.16,1,.3,1);
+            --dur-fast:120ms; --dur-base:220ms; --dur-slow:420ms;
         }
+
+        /* ── Dark / Spellbook overrides ── */
+        [data-theme="spellbook"] {
+            --bg:           var(--midnight-900);
+            --bg-elevated:  var(--midnight-800);
+            --bg-sunken:    #08071a;
+            --surface-ink:  var(--midnight-700);
+            --fg:           #f4ebd4;
+            --fg-2:         #d6c498;
+            --fg-3:         #a8966a;
+            --fg-4:         #6f6142;
+            --border:       rgba(214,196,152,.14);
+            --border-strong:rgba(214,196,152,.3);
+            --border-ink:   rgba(244,235,212,.05);
+            --accent:       var(--amethyst-400);
+            --accent-fg:    var(--midnight-900);
+            --accent-soft:  rgba(154,140,192,.2);
+            --gold-soft:    rgba(236,210,121,.16);
+            --cat-prophet-soft: rgba(154,140,192,.2);
+            --cat-trunk-soft:   rgba(217,165,134,.18);
+            --cat-study-soft:   rgba(168,184,148,.18);
+            --shadow-sm: 0 1px 2px rgba(0,0,0,.5);
+            --shadow-md: 0 4px 10px rgba(0,0,0,.45),0 12px 28px rgba(0,0,0,.35);
+            --shadow-lg: 0 12px 30px rgba(0,0,0,.55),0 28px 60px rgba(0,0,0,.4);
+            --shadow-ink:inset 0 0 0 1px rgba(244,235,212,.05);
+        }
+
+        /* ── Reset ── */
+        *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
 
         body {
-            font-family: 'Cormorant Garamond', serif;
-            background: #0a0e27 url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 1000"><defs><radialGradient id="star"><stop offset="0%25" stop-color="white"/><stop offset="100%25" stop-color="transparent"/></radialGradient></defs><circle cx="50" cy="50" r="1" fill="url(%23star)"/><circle cx="150" cy="120" r="0.8" fill="url(%23star)"/><circle cx="300" cy="80" r="1.2" fill="url(%23star)"/><circle cx="400" cy="200" r="0.9" fill="url(%23star)"/><circle cx="550" cy="50" r="1.1" fill="url(%23star)"/><circle cx="650" cy="150" r="0.7" fill="url(%23star)"/><circle cx="750" cy="100" r="1" fill="url(%23star)"/><circle cx="850" cy="180" r="0.8" fill="url(%23star)"/><circle cx="200" cy="250" r="1" fill="url(%23star)"/><circle cx="500" cy="300" r="0.9" fill="url(%23star)"/><circle cx="800" cy="280" r="1.1" fill="url(%23star)"/></svg>') repeat;
-            padding: 20px;
+            background: var(--bg);
+            color: var(--fg);
+            font-family: var(--font-body);
+            font-size: var(--fs-base);
+            line-height: var(--lh-base);
             min-height: 100vh;
-            position: relative;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+            transition: background var(--dur-slow) var(--ease-stand), color var(--dur-slow) var(--ease-stand);
             overflow-x: hidden;
         }
-
-        /* 魔法粒子背景 */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background:
-                radial-gradient(circle at 20% 50%, rgba(138, 43, 226, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(218, 165, 32, 0.15) 0%, transparent 50%),
-                radial-gradient(circle at 40% 20%, rgba(139, 0, 0, 0.1) 0%, transparent 50%);
-            opacity: 0.4;
-            pointer-events: none;
-            z-index: 0;
+        [data-theme="spellbook"] body {
+            background-image:
+                radial-gradient(ellipse at 15% 45%, rgba(111,95,149,.10) 0%, transparent 55%),
+                radial-gradient(ellipse at 85% 70%, rgba(212,175,55,.07) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 5%,  rgba(154,140,192,.06) 0%, transparent 40%);
         }
 
-        /* 登入頁面樣式 */
+        /* ───────────── NAV ───────────── */
+        .nav {
+            position: sticky; top: 0; z-index: 100;
+            height: 64px;
+            padding: 0 var(--sp-7);
+            display: flex; align-items: center; justify-content: space-between;
+            border-bottom: 1px solid var(--border);
+            transition: background var(--dur-slow) var(--ease-stand);
+        }
+        [data-theme="spellbook"] .nav { background: rgba(11,10,31,.78); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+        [data-theme="parchment"] .nav { background: rgba(250,245,234,.80); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
+
+        .nav-left  { display:flex; align-items:center; gap:var(--sp-3); }
+        .nav-right { display:flex; align-items:center; gap:var(--sp-2); }
+
+        .nav-orb {
+            width:36px; height:36px; border-radius:50%; flex-shrink:0;
+            background: radial-gradient(circle at 30% 30%, var(--amethyst-300), var(--amethyst-600) 60%, var(--midnight-800));
+            box-shadow: var(--glow-amethyst);
+            display:flex; align-items:center; justify-content:center; font-size:18px;
+        }
+        .nav-brand {
+            font-family: var(--font-display); font-size:20px; font-weight:600;
+            letter-spacing: var(--ls-wide); line-height:1;
+        }
+        .nav-tagline {
+            font-family: var(--font-incant); font-size:10px;
+            letter-spacing: var(--ls-xwide); color: var(--gold-600);
+            text-transform: uppercase; margin-top:2px;
+        }
+        [data-theme="spellbook"] .nav-tagline { color: var(--gold-400); }
+
+        .btn-theme {
+            width:40px; height:40px; border-radius:50%;
+            border:1px solid var(--border-strong); background:var(--surface-ink);
+            color:var(--fg); cursor:pointer; font-size:16px;
+            display:flex; align-items:center; justify-content:center;
+            transition: all var(--dur-base) var(--ease-stand);
+        }
+        .btn-theme:hover { box-shadow: var(--glow-amethyst); }
+
+        .nav-user {
+            display:flex; align-items:center; gap:var(--sp-2);
+            padding:6px 12px 6px 6px;
+            border:1px solid var(--border-strong);
+            border-radius: var(--r-pill);
+            background: var(--surface-ink);
+        }
+        .nav-avatar {
+            width:28px; height:28px; border-radius:50%;
+            background: linear-gradient(135deg, var(--amethyst-400), var(--gold-500));
+            display:flex; align-items:center; justify-content:center;
+            color:var(--midnight-900); font-weight:700; font-size:13px;
+        }
+        .nav-username { font-size:13px; font-weight:600; }
+        .btn-logout {
+            background:transparent; border:none; cursor:pointer;
+            color:var(--fg-3); font-size:11px; font-family:var(--font-body);
+            transition: color var(--dur-base) var(--ease-stand);
+        }
+        .btn-logout:hover { color: var(--danger); }
+
+        /* ───────────── LOGIN ───────────── */
         .login-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-            position: relative;
-            z-index: 1;
+            display:flex; justify-content:center; align-items:center;
+            min-height:100vh; padding:var(--sp-5);
         }
-
-        .login-box {
-            background: linear-gradient(135deg, rgba(25, 15, 40, 0.95) 0%, rgba(50, 20, 60, 0.95) 100%);
-            border-radius: 20px;
-            padding: 50px;
-            box-shadow:
-                0 8px 32px rgba(138, 43, 226, 0.4),
-                0 0 60px rgba(218, 165, 32, 0.2),
-                inset 0 0 50px rgba(255, 215, 0, 0.05);
-            max-width: 450px;
-            width: 100%;
-            border: 2px solid rgba(218, 165, 32, 0.3);
-            position: relative;
-            overflow: hidden;
+        .login-card {
+            background: var(--surface-ink);
+            border:1px solid var(--border-strong);
+            border-radius: var(--r-xl);
+            padding: var(--sp-9) var(--sp-8);
+            box-shadow: var(--shadow-lg), var(--shadow-ink);
+            max-width:400px; width:100%;
+            display:flex; flex-direction:column; align-items:center;
+            gap:var(--sp-4);
         }
-
-        .login-box::before {
-            content: '✨';
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            font-size: 2rem;
-            opacity: 0.6;
+        .login-orb-wrap {
+            width:72px; height:72px; border-radius:50%;
+            background: radial-gradient(circle at 30% 30%, var(--amethyst-300), var(--amethyst-600) 60%, var(--midnight-800));
+            box-shadow: var(--glow-amethyst);
+            display:flex; align-items:center; justify-content:center; font-size:36px;
         }
-
-        .login-box h1 {
-            text-align: center;
-            color: #daa520;
-            margin-bottom: 30px;
-            font-size: 2.2rem;
-            font-family: 'Cinzel', serif;
-            text-shadow: 0 0 20px rgba(218, 165, 32, 0.6);
-            letter-spacing: 2px;
+        .login-brand { text-align:center; }
+        .login-brand-title {
+            font-family:var(--font-display); font-size:var(--fs-2xl); font-weight:600;
+            letter-spacing:var(--ls-wide); color:var(--fg);
         }
-
-        .login-box p {
-            text-align: center;
-            color: #c9b896;
-            margin-bottom: 25px;
-            font-size: 1.1rem;
+        .login-brand-sub {
+            font-family:var(--font-incant); font-size:var(--fs-xs);
+            letter-spacing:var(--ls-xwide); color:var(--gold-600);
+            text-transform:uppercase; margin-top:4px;
         }
-
-        .login-box input {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid rgba(218, 165, 32, 0.4);
-            border-radius: 12px;
-            font-size: 1rem;
-            margin-bottom: 20px;
-            background: rgba(0, 0, 0, 0.3);
-            color: #daa520;
-            font-family: 'Cormorant Garamond', serif;
-            transition: all 0.3s;
+        [data-theme="spellbook"] .login-brand-sub { color:var(--gold-400); }
+        .login-desc { font-size:var(--fs-sm); color:var(--fg-3); text-align:center; }
+        .btn-google {
+            display:flex; align-items:center; justify-content:center; gap:var(--sp-2);
+            width:100%; padding:12px var(--sp-5);
+            border:1px solid var(--border-strong); border-radius:var(--r-lg);
+            background:var(--bg-elevated); color:var(--fg);
+            font-family:var(--font-body); font-size:var(--fs-sm); font-weight:600;
+            cursor:pointer; transition: all var(--dur-base) var(--ease-stand);
+            box-shadow: var(--shadow-sm);
         }
+        .btn-google:hover { box-shadow:var(--shadow-md),var(--glow-amethyst); transform:translateY(-1px); }
+        .error-message { color:var(--danger); text-align:center; font-size:var(--fs-sm); }
 
-        .login-box input:focus {
-            outline: none;
-            border-color: #daa520;
-            box-shadow: 0 0 20px rgba(218, 165, 32, 0.4);
+        /* ───────────── DASHBOARD ───────────── */
+        .dashboard-container { display:none; flex-direction:column; min-height:100vh; }
+        .dashboard-container.active { display:flex; }
+        .main-content {
+            flex:1; padding:var(--sp-6);
+            max-width:1440px; margin:0 auto; width:100%;
         }
-
-        .login-box button {
-            width: 100%;
-            padding: 15px;
-            background: linear-gradient(135deg, #8b2cf5 0%, #daa520 100%);
-            color: white;
-            border: 2px solid rgba(218, 165, 32, 0.5);
-            border-radius: 12px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Cinzel', serif;
-            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-            box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
-        }
-
-        .login-box button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 25px rgba(218, 165, 32, 0.6);
-        }
-
-        .error-message {
-            color: #ff6b6b;
-            text-align: center;
-            margin-top: 15px;
-            font-size: 0.95rem;
-        }
-
-        /* Dashboard 樣式 */
-        .dashboard-container {
-            display: none;
-            max-width: 1400px;
-            margin: 0 auto;
-            position: relative;
-            z-index: 1;
-        }
-
-        .dashboard-container.active {
-            display: block;
-        }
-
-        .header {
-            text-align: center;
-            color: #daa520;
-            margin-bottom: 25px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .header h1 {
-            font-size: 2rem;
-            font-family: 'Cinzel', serif;
-            text-shadow:
-                0 0 20px rgba(218, 165, 32, 0.8),
-                0 0 40px rgba(138, 43, 226, 0.4);
-            flex: 1;
-            letter-spacing: 3px;
-        }
-
-        .logout-btn {
-            background: linear-gradient(135deg, rgba(139, 0, 0, 0.8), rgba(70, 0, 0, 0.8));
-            color: #daa520;
-            border: 2px solid #daa520;
-            padding: 12px 25px;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 1rem;
-            font-family: 'Cinzel', serif;
-            transition: all 0.3s;
-            box-shadow: 0 4px 15px rgba(139, 0, 0, 0.4);
-        }
-
-        .logout-btn:hover {
-            background: linear-gradient(135deg, rgba(139, 0, 0, 1), rgba(70, 0, 0, 1));
-            box-shadow: 0 6px 25px rgba(218, 165, 32, 0.6);
-            transform: translateY(-2px);
-        }
-
         .dashboard-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            column-gap: 20px;
-            margin-bottom: 20px;
-            align-items: start;
+            display:grid; grid-template-columns:1fr 1fr;
+            column-gap:var(--sp-5); row-gap:var(--sp-5);
+            align-items:start;
         }
 
+        /* ───────────── SECTION (CategoryColumn) ───────────── */
         .section {
-            margin-bottom: 0;
-            background: linear-gradient(135deg, rgba(30, 20, 50, 0.9) 0%, rgba(50, 30, 70, 0.9) 100%);
-            border-radius: 16px;
-            padding: 18px;
-            box-shadow:
-                0 8px 20px rgba(0, 0, 0, 0.4),
-                0 0 30px rgba(138, 43, 226, 0.2),
-                inset 0 0 50px rgba(218, 165, 32, 0.05);
-            border: 2px solid rgba(218, 165, 32, 0.3);
-            transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
+            border-radius:var(--r-lg); overflow:hidden;
+            background:var(--surface-ink);
+            border:1px solid var(--border);
+            box-shadow:var(--shadow-md),var(--shadow-ink);
+            display:flex; flex-direction:column;
+            transition: box-shadow var(--dur-base) var(--ease-stand), transform var(--dur-base) var(--ease-stand);
         }
+        .section:hover { box-shadow:var(--shadow-lg),var(--shadow-ink); }
 
-        /* 羊皮紙紋理效果 */
-        .section::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background:
-                repeating-linear-gradient(0deg,
-                    transparent,
-                    transparent 2px,
-                    rgba(218, 165, 32, 0.03) 2px,
-                    rgba(218, 165, 32, 0.03) 4px);
-            pointer-events: none;
-            z-index: 0;
-        }
+        .section.prophet { grid-row:1/3; }
 
-        .section>* {
-            position: relative;
-            z-index: 1;
-        }
-
-        .section:hover {
-            transform: translateY(-8px);
-            box-shadow:
-                0 12px 30px rgba(0, 0, 0, 0.5),
-                0 0 50px rgba(218, 165, 32, 0.4);
-            border-color: rgba(218, 165, 32, 0.6);
-        }
-
-        .section.prophet {
-            grid-row: 1 / 5;
-            background: linear-gradient(135deg, rgba(20, 30, 60, 0.9) 0%, rgba(40, 50, 90, 0.9) 100%);
-        }
-
-        .section.others {
-            background: linear-gradient(135deg, rgba(60, 40, 20, 0.9) 0%, rgba(80, 60, 30, 0.9) 100%);
-        }
-
-        .section.focus {
-            background: linear-gradient(135deg, rgba(20, 50, 30, 0.9) 0%, rgba(30, 70, 40, 0.9) 100%);
-        }
+        .section-color-bar { height:3px; flex-shrink:0; }
+        .section.prophet .section-color-bar { background:var(--cat-prophet); }
+        .section.others  .section-color-bar { background:var(--cat-trunk); }
+        .section.focus   .section-color-bar { background:var(--cat-study); }
 
         .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 18px;
-            padding-bottom: 12px;
-            border-bottom: 2px solid rgba(218, 165, 32, 0.4);
-            flex-wrap: wrap;
-            gap: 10px;
+            padding:var(--sp-5) var(--sp-5) var(--sp-3);
+            display:flex; align-items:flex-end; justify-content:space-between;
+            flex-wrap:wrap; gap:var(--sp-2);
+            border-bottom:1px solid var(--border);
         }
-
-        .section-title {
-            font-size: 1.3rem;
-            font-weight: bold;
-            color: #daa520;
-            font-family: 'Cinzel', serif;
-            text-shadow: 0 0 15px rgba(218, 165, 32, 0.5);
-            letter-spacing: 1px;
+        .section-header-left { display:flex; flex-direction:column; gap:4px; }
+        .section-incant {
+            font-family:var(--font-incant); letter-spacing:var(--ls-xwide);
+            font-size:10px; text-transform:uppercase;
         }
+        .section.prophet .section-incant { color:var(--cat-prophet); }
+        .section.others  .section-incant { color:var(--cat-trunk); }
+        .section.focus   .section-incant { color:var(--cat-study); }
 
-        .week-controls {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-            flex-wrap: wrap;
+        .section-title-row { display:flex; align-items:center; gap:10px; }
+        .section-sigil { font-size:24px; filter:drop-shadow(0 1px 2px rgba(0,0,0,.15)); }
+        .section-title { font-family:var(--font-body); font-size:var(--fs-lg); font-weight:700; color:var(--fg); }
+
+        .btn-add {
+            display:flex; align-items:center; gap:var(--sp-2);
+            padding:var(--sp-2) var(--sp-3);
+            border:1px dashed var(--border-strong); border-radius:var(--r-md);
+            background:transparent; color:var(--fg-3);
+            font-family:var(--font-body); font-size:13px; font-weight:500;
+            cursor:pointer; transition:all var(--dur-base) var(--ease-stand); white-space:nowrap;
         }
+        .section.prophet .btn-add:hover { border-color:var(--cat-prophet); color:var(--cat-prophet); background:var(--cat-prophet-soft); }
+        .section.others  .btn-add:hover { border-color:var(--cat-trunk);   color:var(--cat-trunk);   background:var(--cat-trunk-soft); }
+        .section.focus   .btn-add:hover { border-color:var(--cat-study);   color:var(--cat-study);   background:var(--cat-study-soft); }
 
-        .date-picker {
-            padding: 10px 15px;
-            border: 2px solid rgba(218, 165, 32, 0.5);
-            border-radius: 10px;
-            font-size: 0.95rem;
-            background: rgba(0, 0, 0, 0.4);
-            color: #daa520;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Cormorant Garamond', serif;
-        }
-
-        .date-picker:hover {
-            background: rgba(218, 165, 32, 0.2);
-            border-color: #daa520;
-            box-shadow: 0 0 15px rgba(218, 165, 32, 0.3);
-        }
-
-        .clear-btn {
-            padding: 10px 20px;
-            background: linear-gradient(135deg, rgba(139, 0, 0, 0.8), rgba(70, 0, 0, 0.8));
-            color: #daa520;
-            border: 2px solid rgba(218, 165, 32, 0.4);
-            border-radius: 10px;
-            font-size: 0.95rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Cinzel', serif;
-            box-shadow: 0 4px 10px rgba(139, 0, 0, 0.3);
-        }
-
-        .clear-btn:hover {
-            background: linear-gradient(135deg, rgba(139, 0, 0, 1), rgba(70, 0, 0, 1));
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(218, 165, 32, 0.4);
-        }
-
-        .add-btn {
-            background: linear-gradient(135deg, rgba(138, 43, 226, 0.8), rgba(75, 0, 130, 0.8));
-            border: 2px solid rgba(218, 165, 32, 0.5);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            font-size: 1.8rem;
-            cursor: pointer;
-            transition: all 0.3s;
-            color: #daa520;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
-        }
-
-        .add-btn:hover {
-            background: linear-gradient(135deg, rgba(138, 43, 226, 1), rgba(75, 0, 130, 1));
-            transform: rotate(90deg) scale(1.1);
-            box-shadow: 0 6px 25px rgba(218, 165, 32, 0.6);
-        }
-
-        /* 當周待辦的特殊佈局 */
+        /* ───────────── WEEKLY GRID ───────────── */
         .weekly-grid {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
+            display:flex; flex-direction:column; gap:var(--sp-3);
+            padding:var(--sp-3) var(--sp-4) var(--sp-4);
         }
-
         .day-column {
-            background: rgba(0, 0, 0, 0.3);
-            border-radius: 12px;
-            padding: 12px;
-            min-height: 80px;
-            border: 1px solid rgba(218, 165, 32, 0.2);
-            transition: all 0.3s;
+            background:var(--bg-elevated); border-radius:var(--r-md);
+            padding:var(--sp-3); min-height:72px;
+            border:1px solid var(--border);
+            transition:all var(--dur-base) var(--ease-stand);
         }
-
-        .day-column:hover {
-            background: rgba(218, 165, 32, 0.1);
-            border-color: rgba(218, 165, 32, 0.4);
-        }
-
+        .day-column:hover { border-color:var(--border-strong); }
         .day-column.drag-over {
-            background: rgba(218, 165, 32, 0.2);
-            border: 2px dashed #daa520;
-            box-shadow: 0 0 20px rgba(218, 165, 32, 0.4);
+            border:1.5px dashed var(--cat-prophet);
+            background:var(--cat-prophet-soft);
+            box-shadow:var(--glow-amethyst);
         }
-
         .day-title {
-            font-weight: bold;
-            font-size: 1rem;
-            color: #daa520;
-            margin-bottom: 10px;
-            text-align: left;
-            padding-bottom: 8px;
-            border-bottom: 2px solid rgba(218, 165, 32, 0.3);
-            font-family: 'Cinzel', serif;
-            text-shadow: 0 0 10px rgba(218, 165, 32, 0.3);
+            font-family:var(--font-incant); font-size:11px;
+            letter-spacing:var(--ls-xwide); text-transform:uppercase;
+            color:var(--cat-prophet); margin-bottom:var(--sp-2);
+            padding-bottom:var(--sp-2); border-bottom:1px solid var(--border);
         }
 
-        /* 待辦事項樣式 */
+        /* ───────────── TODO LIST ───────────── */
+        .todo-list {
+            display:flex; flex-direction:column; gap:var(--sp-2);
+            padding:var(--sp-3) var(--sp-4) var(--sp-4);
+        }
+        .day-column .todo-list { padding:0; margin-top:var(--sp-1); }
+
+        /* ───────────── TASK ITEM ───────────── */
         .todo-item {
-            background: linear-gradient(135deg, rgba(40, 30, 60, 0.8), rgba(60, 40, 80, 0.8));
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 12px;
-            display: flex;
-            align-items: flex-start;
-            gap: 12px;
-            box-shadow:
-                0 4px 10px rgba(0, 0, 0, 0.3),
-                0 0 15px rgba(138, 43, 226, 0.2);
-            cursor: move;
-            transition: all 0.3s;
-            border: 1px solid rgba(218, 165, 32, 0.2);
+            display:flex; align-items:flex-start; gap:var(--sp-2);
+            padding:10px var(--sp-3);
+            background:var(--surface-ink);
+            border:1px solid var(--border); border-radius:var(--r-md);
+            box-shadow:var(--shadow-sm),var(--shadow-ink);
+            cursor:default; position:relative;
+            transition:all var(--dur-base) var(--ease-stand);
         }
-
         .todo-item:hover {
-            box-shadow:
-                0 6px 15px rgba(0, 0, 0, 0.4),
-                0 0 25px rgba(218, 165, 32, 0.3);
-            transform: translateX(5px);
-            border-color: rgba(218, 165, 32, 0.4);
+            box-shadow:var(--shadow-md),var(--shadow-ink);
+            transform:translateY(-1px); border-color:var(--border-strong);
         }
-
         .todo-item.important {
-            background: linear-gradient(135deg, rgba(139, 0, 0, 0.6), rgba(70, 0, 0, 0.6));
-            border-left: 4px solid #daa520;
-            box-shadow:
-                0 4px 10px rgba(139, 0, 0, 0.4),
-                0 0 20px rgba(218, 165, 32, 0.3);
+            border-left:2.5px solid var(--gold-500);
+            background:var(--gold-soft);
         }
-
-        .todo-item.dragging {
-            opacity: 0.5;
-        }
-
-        .todo-item.drag-after {
-            border-top: 3px solid #daa520;
-            margin-top: 8px;
-        }
+        .todo-item.dragging { opacity:.45; }
+        .todo-item.drag-after { border-top:2px solid var(--accent); margin-top:6px; }
 
         .drag-handle {
-            color: #daa520;
-            font-size: 1.4rem;
-            cursor: grab;
-            text-shadow: 0 0 10px rgba(218, 165, 32, 0.5);
+            color:var(--fg-4); font-size:14px; cursor:grab;
+            flex-shrink:0; margin-top:2px; user-select:none;
+            transition:color var(--dur-fast) var(--ease-stand);
+        }
+        .drag-handle:hover { color:var(--fg-3); }
+        .drag-handle:active { cursor:grabbing; }
+
+        .todo-checkbox {
+            position:relative; width:22px; height:22px; border-radius:50%;
+            border:1.5px solid var(--border-strong);
+            display:inline-flex; align-items:center; justify-content:center;
+            flex-shrink:0; margin-top:1px;
+            background:transparent; color:var(--midnight-900);
+            font-size:11px; font-weight:700; cursor:pointer;
+            transition:all var(--dur-base) var(--ease-magic);
+        }
+        .todo-checkbox:hover { border-color:var(--gold-500); }
+        .todo-checkbox.important {
+            border-color:var(--gold-700);
+            background:radial-gradient(circle, var(--gold-400), var(--gold-600));
+            box-shadow:var(--glow-gold);
         }
 
-        .drag-handle:active {
-            cursor: grabbing;
-        }
-
-        .todo-content {
-            flex: 1;
-            min-width: 0;
-            overflow: hidden;
-        }
-
+        .todo-content { flex:1; min-width:0; }
         .todo-text {
-            color: #e8dcc4;
-            font-size: 1rem;
-            word-break: break-word;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            white-space: normal;
-            max-width: 100%;
-            line-height: 1.6;
+            font-size:15px; font-weight:500; color:var(--fg);
+            word-break:break-word; word-wrap:break-word; overflow-wrap:break-word;
+            line-height:var(--lh-snug);
         }
-
+        .todo-text a { color:var(--gold-500); text-decoration:underline; text-underline-offset:2px; }
         .note-text {
-            font-size: 0.9rem;
-            color: #c9b896;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px solid rgba(218, 165, 32, 0.3);
-            font-style: italic;
-            word-break: break-word;
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            white-space: pre-wrap;
-            max-width: 100%;
-            display: -webkit-box;
-            -webkit-line-clamp: 4;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            font-size:var(--fs-sm); color:var(--fg-3); margin-top:var(--sp-1);
+            font-style:italic; word-break:break-word; overflow-wrap:break-word;
+            white-space:pre-wrap; display:-webkit-box;
+            -webkit-line-clamp:4; -webkit-box-orient:vertical; overflow:hidden;
         }
+        .note-text a { color:var(--gold-500); text-decoration:underline; }
 
-        .todo-actions {
-            display: flex;
-            gap: 8px;
-            align-items: center;
-        }
-
+        .todo-actions { display:flex; gap:4px; align-items:center; flex-shrink:0; }
         .action-btn {
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            border: 1px solid rgba(218, 165, 32, 0.4);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-            transition: all 0.3s;
-            background: linear-gradient(135deg, rgba(138, 43, 226, 0.6), rgba(75, 0, 130, 0.6));
-            color: #daa520;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            width:28px; height:28px; border-radius:var(--r-sm); border:none;
+            cursor:pointer; display:flex; align-items:center; justify-content:center;
+            font-size:13px; background:transparent; color:var(--fg-3);
+            transition:all var(--dur-fast) var(--ease-stand);
         }
+        .action-btn:hover { background:var(--accent-soft); color:var(--accent); }
+        .action-btn.danger:hover { background:rgba(154,79,90,.12); color:var(--blood-500); }
 
-        .action-btn:hover {
-            background: linear-gradient(135deg, rgba(218, 165, 32, 0.8), rgba(184, 134, 11, 0.8));
-            transform: scale(1.15);
-            box-shadow: 0 4px 15px rgba(218, 165, 32, 0.5);
-        }
-
-        /* Modal 樣式 */
+        /* ───────────── MODAL ───────────── */
         .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(10, 14, 39, 0.85);
-            z-index: 1000;
-            justify-content: center;
-            align-items: center;
-            backdrop-filter: blur(5px);
+            display:none; position:fixed; top:0; left:0; width:100%; height:100%;
+            background:rgba(11,10,31,.65); z-index:500;
+            justify-content:center; align-items:center;
+            backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px);
         }
-
-        .modal.active {
-            display: flex;
-        }
-
+        .modal.active { display:flex; }
         .modal-content {
-            background: linear-gradient(135deg, rgba(30, 20, 50, 0.98) 0%, rgba(50, 30, 70, 0.98) 100%);
-            border-radius: 20px;
-            padding: 35px;
-            max-width: 550px;
-            width: 90%;
-            box-shadow:
-                0 12px 40px rgba(0, 0, 0, 0.6),
-                0 0 60px rgba(138, 43, 226, 0.4),
-                inset 0 0 50px rgba(218, 165, 32, 0.05);
-            border: 2px solid rgba(218, 165, 32, 0.4);
-            position: relative;
+            background:var(--surface-ink);
+            border:1px solid var(--border-strong); border-radius:var(--r-xl);
+            padding:var(--sp-7); max-width:520px; width:92%;
+            box-shadow:var(--shadow-lg),var(--shadow-ink);
+            display:flex; flex-direction:column; gap:var(--sp-5);
         }
-
-        .modal-content::before {
-            content: '✨';
-            position: absolute;
-            top: 15px;
-            right: 15px;
-            font-size: 1.5rem;
-            opacity: 0.6;
+        .modal-title {
+            font-family:var(--font-display); font-size:var(--fs-xl); font-weight:600;
+            letter-spacing:var(--ls-wide); color:var(--fg);
         }
-
-        .modal-content h3 {
-            margin-bottom: 25px;
-            color: #daa520;
-            font-family: 'Cinzel', serif;
-            font-size: 1.8rem;
-            text-shadow: 0 0 15px rgba(218, 165, 32, 0.5);
+        .field-label {
+            display:block; font-family:var(--font-incant);
+            letter-spacing:var(--ls-xwide); font-size:10px;
+            color:var(--gold-700); margin-bottom:var(--sp-1); text-transform:uppercase;
         }
-
-        .modal-content input,
-        .modal-content textarea,
-        .modal-content select {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid rgba(218, 165, 32, 0.4);
-            border-radius: 12px;
-            font-size: 1rem;
-            margin-bottom: 20px;
-            font-family: 'Cormorant Garamond', serif;
-            background: rgba(0, 0, 0, 0.4);
-            color: #e8dcc4;
-            transition: all 0.3s;
+        [data-theme="spellbook"] .field-label { color:var(--gold-400); }
+        .modal-field { display:flex; flex-direction:column; }
+        .modal-input, .modal-textarea {
+            width:100%; box-sizing:border-box;
+            font-family:var(--font-body); font-size:15px;
+            padding:10px var(--sp-3); border-radius:var(--r-md);
+            border:1px solid var(--border-strong);
+            background:var(--bg-elevated); color:var(--fg);
+            outline:none; transition:all var(--dur-base) var(--ease-stand);
         }
-
-        .modal-content textarea {
-            min-height: 120px;
-            resize: vertical;
+        .modal-textarea { min-height:100px; resize:vertical; }
+        .modal-input:focus, .modal-textarea:focus {
+            border-color:transparent; box-shadow:var(--glow-amethyst);
         }
-
-        .modal-content input:focus,
-        .modal-content textarea:focus,
-        .modal-content select:focus {
-            outline: none;
-            border-color: #daa520;
-            box-shadow: 0 0 20px rgba(218, 165, 32, 0.4);
-        }
-
-        .modal-buttons {
-            display: flex;
-            gap: 15px;
-            justify-content: flex-end;
-        }
-
+        .modal-buttons { display:flex; gap:var(--sp-3); justify-content:flex-end; }
         .modal-btn {
-            padding: 12px 28px;
-            border: none;
-            border-radius: 12px;
-            cursor: pointer;
-            font-size: 1.05rem;
-            transition: all 0.3s;
-            font-family: 'Cinzel', serif;
-            border: 2px solid rgba(218, 165, 32, 0.4);
+            padding:10px var(--sp-6); border-radius:var(--r-lg);
+            font-family:var(--font-body); font-size:15px; font-weight:600;
+            cursor:pointer; transition:all var(--dur-base) var(--ease-stand);
         }
-
         .modal-btn.primary {
-            background: linear-gradient(135deg, #8b2cf5 0%, #daa520 100%);
-            color: white;
-            box-shadow: 0 4px 15px rgba(138, 43, 226, 0.4);
+            background:var(--accent); color:var(--accent-fg); border:1px solid transparent;
         }
-
-        .modal-btn.primary:hover {
-            box-shadow: 0 6px 25px rgba(218, 165, 32, 0.6);
-            transform: translateY(-2px);
-        }
-
+        .modal-btn.primary:hover { box-shadow:var(--glow-amethyst); transform:translateY(-1px); }
         .modal-btn.secondary {
-            background: rgba(100, 100, 100, 0.5);
-            color: #daa520;
+            background:transparent; color:var(--fg-2); border:1px solid var(--border-strong);
         }
+        .modal-btn.secondary:hover { background:var(--accent-soft); }
 
-        .modal-btn.secondary:hover {
-            background: rgba(120, 120, 120, 0.7);
-        }
-
-        /* 日期按鈕組樣式 */
-        .day-button-group {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
+        /* ───────────── DAY CHIPS ───────────── */
+        .day-button-group { display:flex; gap:var(--sp-2); flex-wrap:wrap; }
         .day-button {
-            padding: 10px 15px;
-            background: rgba(0, 0, 0, 0.4);
-            border: 2px solid rgba(218, 165, 32, 0.4);
-            border-radius: 8px;
-            color: #e8dcc4;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 0.95rem;
-            white-space: nowrap;
+            padding:6px 12px; border-radius:var(--r-pill); font-size:13px; font-weight:600;
+            border:1px solid var(--border-strong); background:var(--bg-elevated); color:var(--fg-2);
+            cursor:pointer; font-family:var(--font-body); white-space:nowrap;
+            transition:all var(--dur-base) var(--ease-stand);
         }
-
-        .day-button:hover {
-            background: rgba(218, 165, 32, 0.2);
-            border-color: #daa520;
-        }
-
+        .day-button:hover { border-color:var(--cat-prophet); color:var(--cat-prophet); }
         .day-button.selected {
-            background: linear-gradient(135deg, rgba(138, 43, 226, 0.6), rgba(75, 0, 130, 0.6));
-            border-color: #daa520;
-            color: #daa520;
-            box-shadow: 0 0 15px rgba(218, 165, 32, 0.4);
+            background:var(--cat-prophet-soft); border-color:var(--cat-prophet); color:var(--cat-prophet);
         }
 
-        /* 響應式設計 */
-        @media (max-width: 1024px) {
-            .dashboard-grid {
-                grid-template-columns: 1fr;
-                display: flex;
-                flex-direction: column;
-            }
+        .hidden { display:none !important; }
 
-            .section.prophet {
-                grid-row: auto;
-                order: 1;
-            }
-
-            .section.others {
-                order: 2;
-            }
-
-            .section.focus {
-                order: 3;
-            }
+        /* ───────────── SPARKLE ───────────── */
+        @keyframes accioRise {
+            0%   { opacity:1; transform:translateY(0) scale(1); }
+            100% { opacity:0; transform:translateY(-28px) scale(.3); }
         }
 
-        @media (max-width: 768px) {
-            .header h1 {
-                font-size: 1.6rem;
-            }
-
-            .section-title {
-                font-size: 1.1rem;
-            }
+        /* ───────────── RESPONSIVE ───────────── */
+        @media (max-width:1024px) {
+            .dashboard-grid { grid-template-columns:1fr; }
+            .section.prophet { grid-row:auto; }
         }
-
-        @media (max-width: 480px) {
-            body {
-                padding: 10px;
-            }
-
-            .section {
-                padding: 12px;
-            }
-
-            .header {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .login-box {
-                padding: 30px;
-            }
+        @media (max-width:768px) {
+            .main-content { padding:var(--sp-4); }
+            .nav { padding:0 var(--sp-4); }
+            .section-title { font-size:var(--fs-md); }
         }
-
-        .hidden {
-            display: none;
+        @media (max-width:480px) {
+            .main-content { padding:var(--sp-3); }
+            .nav-tagline, .nav-username { display:none; }
+            .login-card { padding:var(--sp-7) var(--sp-5); }
+            .section-header { padding:var(--sp-4) var(--sp-4) var(--sp-3); }
         }
     </style>
 </head>
@@ -710,20 +512,20 @@
 <body>
     <!-- 登入頁面 -->
     <div class="login-container" id="loginContainer">
-        <div class="login-box">
-            <h1>🔮 魔法 Dashboard</h1>
-            <p style="text-align: center; color: #c9b896; margin-bottom: 20px;">使用 Google 帳號施展登入魔法</p>
-            <button onclick="login()" style="display: flex; align-items: center; justify-content: center; gap: 10px;">
+        <div class="login-card">
+            <div class="login-orb-wrap">🔮</div>
+            <div class="login-brand">
+                <div class="login-brand-title">ACCIO</div>
+                <div class="login-brand-sub">魔法待辦 2.0</div>
+            </div>
+            <p class="login-desc">使用 Google 帳號施展登入魔法</p>
+            <button class="btn-google" onclick="login()">
                 <svg width="18" height="18" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
-                    <path fill="#EA4335"
-                        d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
-                    <path fill="#4285F4"
-                        d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
-                    <path fill="#FBBC05"
-                        d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
-                    <path fill="#34A853"
-                        d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
-                    <path fill="none" d="M0 0h48v48H0z" />
+                    <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/>
+                    <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/>
+                    <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/>
+                    <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/>
+                    <path fill="none" d="M0 0h48v48H0z"/>
                 </svg>
                 使用 Google 登入
             </button>
@@ -733,42 +535,75 @@
 
     <!-- Dashboard 主頁面 -->
     <div class="dashboard-container" id="dashboardContainer">
-        <div class="header">
-            <div></div>
-            <h1>🪄 疾疾，清單現身</h1>
-            <button class="logout-btn" onclick="logout()">登出</button>
-        </div>
+        <!-- Nav -->
+        <nav class="nav">
+            <div class="nav-left">
+                <div class="nav-orb">🔮</div>
+                <div>
+                    <div class="nav-brand">ACCIO</div>
+                    <div class="nav-tagline">魔法待辦 2.0</div>
+                </div>
+            </div>
+            <div class="nav-right">
+                <button class="btn-theme" id="themeToggle" onclick="toggleTheme()" title="切換主題">☀️</button>
+                <div class="nav-user">
+                    <div class="nav-avatar" id="navAvatar">魔</div>
+                    <span class="nav-username" id="navUsername">法師</span>
+                    <button class="btn-logout" onclick="logout()">登出</button>
+                </div>
+            </div>
+        </nav>
 
-        <div class="dashboard-grid">
-            <!-- 區塊 1: 預言家日報 -->
-            <div class="section prophet" data-section="prophet" id="prophetSection">
-                <div class="section-header">
-                    <h2 class="section-title">🔮 預言家日報</h2>
-                    <div class="week-controls">
-                        <button class="add-btn" onclick="showAddModal('prophet')">+</button>
+        <!-- Main -->
+        <div class="main-content">
+            <div class="dashboard-grid">
+                <!-- 預言家日報 -->
+                <div class="section prophet" data-section="prophet" id="prophetSection">
+                    <div class="section-color-bar"></div>
+                    <div class="section-header">
+                        <div class="section-header-left">
+                            <div class="section-incant">✦ PROPHET'S DAILY ✦</div>
+                            <div class="section-title-row">
+                                <span class="section-sigil">🔮</span>
+                                <h2 class="section-title">預言家日報</h2>
+                            </div>
+                        </div>
+                        <button class="btn-add" onclick="showAddModal('prophet')">✨ 施展新魔法</button>
                     </div>
+                    <div class="weekly-grid" id="prophetGrid"></div>
                 </div>
-                <div class="weekly-grid" id="prophetGrid">
-                    <!-- 10 個工作天的欄位將由 JavaScript 動態生成 -->
-                </div>
-            </div>
 
-            <!-- 區塊 2: 行李箱 -->
-            <div class="section others" data-section="others">
-                <div class="section-header">
-                    <h2 class="section-title">🧳 行李箱</h2>
-                    <button class="add-btn" onclick="showAddModal('others')">+</button>
+                <!-- 行李箱 -->
+                <div class="section others" data-section="others">
+                    <div class="section-color-bar"></div>
+                    <div class="section-header">
+                        <div class="section-header-left">
+                            <div class="section-incant">✦ THE TRUNK ✦</div>
+                            <div class="section-title-row">
+                                <span class="section-sigil">🧳</span>
+                                <h2 class="section-title">行李箱</h2>
+                            </div>
+                        </div>
+                        <button class="btn-add" onclick="showAddModal('others')">✨ 施展新魔法</button>
+                    </div>
+                    <div class="todo-list" id="others"></div>
                 </div>
-                <div class="todo-list" id="others"></div>
-            </div>
 
-            <!-- 區塊 3: 魔法研究 -->
-            <div class="section focus" data-section="focus">
-                <div class="section-header">
-                    <h2 class="section-title">🧙 魔法研究</h2>
-                    <button class="add-btn" onclick="showAddModal('focus')">+</button>
+                <!-- 魔法研究 -->
+                <div class="section focus" data-section="focus">
+                    <div class="section-color-bar"></div>
+                    <div class="section-header">
+                        <div class="section-header-left">
+                            <div class="section-incant">✦ MAGICAL STUDIES ✦</div>
+                            <div class="section-title-row">
+                                <span class="section-sigil">🧙</span>
+                                <h2 class="section-title">魔法研究</h2>
+                            </div>
+                        </div>
+                        <button class="btn-add" onclick="showAddModal('focus')">✨ 施展新魔法</button>
+                    </div>
+                    <div class="todo-list" id="focus"></div>
                 </div>
-                <div class="todo-list" id="focus"></div>
             </div>
         </div>
     </div>
@@ -776,12 +611,16 @@
     <!-- 新增待辦 Modal -->
     <div class="modal" id="addModal">
         <div class="modal-content">
-            <h3>新增魔法任務</h3>
-            <div id="dayButtonGroup" class="day-button-group hidden">
-                <!-- 按鈕會由 JavaScript 動態生成 -->
+            <h3 class="modal-title">新增魔法任務</h3>
+            <div id="dayButtonGroup" class="day-button-group hidden"></div>
+            <div class="modal-field">
+                <label class="field-label">任務咒語</label>
+                <input class="modal-input" type="text" id="newTodoText" placeholder="輸入魔法任務…" />
             </div>
-            <input type="text" id="newTodoText" placeholder="輸入魔法任務..." />
-            <textarea id="newTodoNote" placeholder="輸入魔法筆記..."></textarea>
+            <div class="modal-field">
+                <label class="field-label">魔法筆記</label>
+                <textarea class="modal-textarea" id="newTodoNote" placeholder="輸入魔法筆記…"></textarea>
+            </div>
             <div class="modal-buttons">
                 <button class="modal-btn secondary" onclick="closeAddModal()">取消</button>
                 <button class="modal-btn primary" onclick="addTodo()">施展魔法</button>
@@ -792,9 +631,15 @@
     <!-- 編輯待辦事項 Modal -->
     <div class="modal" id="editModal">
         <div class="modal-content">
-            <h3>編輯魔法任務</h3>
-            <input type="text" id="editTodoText" placeholder="輸入魔法任務..." />
-            <textarea id="editTodoNote" placeholder="輸入魔法筆記..."></textarea>
+            <h3 class="modal-title">編輯魔法任務</h3>
+            <div class="modal-field">
+                <label class="field-label">任務咒語</label>
+                <input class="modal-input" type="text" id="editTodoText" placeholder="輸入魔法任務…" />
+            </div>
+            <div class="modal-field">
+                <label class="field-label">魔法筆記</label>
+                <textarea class="modal-textarea" id="editTodoNote" placeholder="輸入魔法筆記…"></textarea>
+            </div>
             <div class="modal-buttons">
                 <button class="modal-btn secondary" onclick="closeEditModal()">取消</button>
                 <button class="modal-btn primary" onclick="saveEditTodo()">儲存</button>
@@ -808,7 +653,6 @@
         import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut, setPersistence, browserLocalPersistence } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
         import { getDatabase, ref, set, get, onValue, remove } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-database.js';
 
-        // Firebase 配置
         const firebaseConfig = {
             apiKey: "AIzaSyDeqJaIZ6L8oFO1xBumtPT93g9G9Dm2du8",
             authDomain: "mydashboard-8aa06.firebaseapp.com",
@@ -819,29 +663,32 @@
             appId: "1:150879644790:web:a070839e87f39f82fe8357"
         };
 
-        // 初始化 Firebase
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const database = getDatabase(app);
         const provider = new GoogleAuthProvider();
 
-        // 設定持久化登入（30天）
         setPersistence(auth, browserLocalPersistence);
 
-        // 全域變數
         window.currentUser = null;
         window.currentEditingId = null;
         window.currentAddSection = null;
         window.currentEditingTodoId = null;
-        window.workingDays = []; // 儲存10個工作天的日期
-        window.expiredTasksMoved = false; // 標記是否已移動過期任務
+        window.workingDays = [];
+        window.expiredTasksMoved = false;
 
-        // 登入函數
+        // ── Theme toggle ──
+        window.toggleTheme = function () {
+            const html = document.documentElement;
+            const isSpellbook = html.getAttribute('data-theme') === 'spellbook';
+            html.setAttribute('data-theme', isSpellbook ? 'parchment' : 'spellbook');
+            document.getElementById('themeToggle').textContent = isSpellbook ? '🌙' : '☀️';
+        };
+
+        // ── Auth ──
         window.login = async function () {
             const errorMessage = document.getElementById('errorMessage');
-
             try {
-                // 使用 Google 登入
                 const result = await signInWithPopup(auth, provider);
                 window.currentUser = result.user;
                 errorMessage.textContent = '';
@@ -857,33 +704,22 @@
             }
         };
 
-        // 登出函數
         window.logout = async function () {
             await signOut(auth);
             window.currentUser = null;
             showLogin();
         };
 
-        // 測試模式：如果 URL 包含 #test，跳過登入
         if (window.location.hash === '#test') {
-            window.currentUser = { uid: 'test-user' };
+            window.currentUser = { uid: 'test-user', displayName: '測試魔法師' };
             showDashboard();
-            // 在測試模式下，初始化拖曳功能
-            setTimeout(() => {
-                initializeDragAndDrop();
-            }, 100);
-            
-            // 測試模式也需要檢查日期變更
+            setTimeout(() => { initializeDragAndDrop(); }, 100);
             setInterval(() => {
-                const today = new Date();
-                today.setHours(0, 0, 0, 0);
+                const today = new Date(); today.setHours(0,0,0,0);
                 const firstDay = window.workingDays[0];
                 if (firstDay) {
-                    const firstDayDate = new Date(firstDay);
-                    firstDayDate.setHours(0, 0, 0, 0);
-                    
+                    const firstDayDate = new Date(firstDay); firstDayDate.setHours(0,0,0,0);
                     if (firstDayDate.getTime() !== today.getTime()) {
-                        console.log('日期已改變，重新生成工作天');
                         window.expiredTasksMoved = false;
                         generateWorkingDays();
                     }
@@ -891,70 +727,57 @@
             }, 3600000);
         }
 
-        // 監聽認證狀態
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 window.currentUser = user;
                 showDashboard();
                 loadTodos();
-                
-                // 每小時檢查一次是否需要更新日期（以防跨日）
                 setInterval(() => {
-                    const today = new Date();
-                    today.setHours(0, 0, 0, 0);
+                    const today = new Date(); today.setHours(0,0,0,0);
                     const firstDay = window.workingDays[0];
                     if (firstDay) {
-                        const firstDayDate = new Date(firstDay);
-                        firstDayDate.setHours(0, 0, 0, 0);
-                        
-                        // 如果第一天不是今天，重新生成工作天
+                        const firstDayDate = new Date(firstDay); firstDayDate.setHours(0,0,0,0);
                         if (firstDayDate.getTime() !== today.getTime()) {
-                            console.log('日期已改變，重新生成工作天');
-                            window.expiredTasksMoved = false; // 重置標記
+                            window.expiredTasksMoved = false;
                             generateWorkingDays();
                             loadTodos();
                         }
                     }
-                }, 3600000); // 每小時檢查一次
+                }, 3600000);
             } else {
-                if (window.location.hash !== '#test') {
-                    showLogin();
-                }
+                if (window.location.hash !== '#test') showLogin();
             }
         });
 
-        // 顯示登入頁面
         function showLogin() {
             document.getElementById('loginContainer').style.display = 'flex';
             document.getElementById('dashboardContainer').classList.remove('active');
         }
 
-        // 顯示 Dashboard
         function showDashboard() {
             document.getElementById('loginContainer').style.display = 'none';
             document.getElementById('dashboardContainer').classList.add('active');
             generateWorkingDays();
+            // Update nav user info
+            if (window.currentUser) {
+                const name = window.currentUser.displayName || '魔法師';
+                document.getElementById('navAvatar').textContent = name[0] || '魔';
+                document.getElementById('navUsername').textContent = name;
+            }
         }
 
-        // 計算從今天開始的10個工作天（排除週六日）
         function calculateWorkingDays() {
             const days = [];
             let currentDate = new Date();
-            currentDate.setHours(0, 0, 0, 0); // 重置時間為當天00:00
-
+            currentDate.setHours(0,0,0,0);
             while (days.length < 10) {
                 const dayOfWeek = currentDate.getDay();
-                // 0 = 週日, 6 = 週六
-                if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-                    days.push(new Date(currentDate));
-                }
+                if (dayOfWeek !== 0 && dayOfWeek !== 6) days.push(new Date(currentDate));
                 currentDate.setDate(currentDate.getDate() + 1);
             }
-
             return days;
         }
 
-        // 格式化日期為 YYYY-MM-DD
         function formatDate(date) {
             const year = date.getFullYear();
             const month = String(date.getMonth() + 1).padStart(2, '0');
@@ -962,61 +785,42 @@
             return `${year}-${month}-${day}`;
         }
 
-        // 格式化日期顯示為 M/D (週X)
         function formatDateDisplay(date) {
             const month = date.getMonth() + 1;
             const day = date.getDate();
-            const dayNames = ['週日', '週一', '週二', '週三', '週四', '週五', '週六'];
-            const dayName = dayNames[date.getDay()];
-            return `${month}/${day} (${dayName})`;
+            const dayNames = ['週日','週一','週二','週三','週四','週五','週六'];
+            return `${month}/${day} (${dayNames[date.getDay()]})`;
         }
 
-        // 生成10個工作天的欄位
         function generateWorkingDays() {
             window.workingDays = calculateWorkingDays();
             const prophetGrid = document.getElementById('prophetGrid');
             prophetGrid.innerHTML = '';
-
-            window.workingDays.forEach((date, index) => {
+            window.workingDays.forEach((date) => {
                 const dateStr = formatDate(date);
                 const displayStr = formatDateDisplay(date);
-
                 const dayColumn = document.createElement('div');
                 dayColumn.className = 'day-column';
                 dayColumn.dataset.day = dateStr;
-
                 dayColumn.innerHTML = `
                     <div class="day-title">${displayStr}</div>
                     <div class="todo-list" id="${dateStr}"></div>
                 `;
-
                 prophetGrid.appendChild(dayColumn);
             });
-
-            // 重新初始化拖曳功能
-            setTimeout(() => {
-                initializeDragAndDrop();
-            }, 100);
+            setTimeout(() => { initializeDragAndDrop(); }, 100);
         }
 
-        // 載入所有待辦事項
         async function loadTodos() {
             if (!window.currentUser) return;
-
             const userId = window.currentUser.uid;
             const todosRef = ref(database, `users/${userId}/todos`);
-
-            // 先執行數據遷移（只執行一次）
             await migrateOldTodos();
-
             onValue(todosRef, async (snapshot) => {
-                // 清空所有列表
                 window.workingDays.forEach(date => {
-                    const dateStr = formatDate(date);
-                    const container = document.getElementById(dateStr);
+                    const container = document.getElementById(formatDate(date));
                     if (container) container.innerHTML = '';
                 });
-                
                 const othersContainer = document.getElementById('others');
                 const focusContainer = document.getElementById('focus');
                 if (othersContainer) othersContainer.innerHTML = '';
@@ -1024,191 +828,108 @@
 
                 const data = snapshot.val();
                 if (data) {
-                    // 轉換成陣列並按 order 排序
-                    const todosArray = Object.keys(data).map(id => ({
-                        id: id,
-                        ...data[id]
-                    }));
-
-                    // 按 order 排序（如果沒有 order 則使用 createdAt）
-                    todosArray.sort((a, b) => {
-                        const orderA = a.order || a.createdAt || 0;
-                        const orderB = b.order || b.createdAt || 0;
-                        return orderA - orderB;
-                    });
-
-                    // 移動過期任務到今天（只在初次載入時執行）
+                    const todosArray = Object.keys(data).map(id => ({ id, ...data[id] }));
+                    todosArray.sort((a, b) => (a.order || a.createdAt || 0) - (b.order || b.createdAt || 0));
                     if (!window.expiredTasksMoved) {
                         await moveExpiredTasksToToday(todosArray);
                         window.expiredTasksMoved = true;
                     }
-
-                    // 依序渲染
-                    todosArray.forEach(todo => {
-                        renderTodo(todo.id, todo);
-                    });
+                    todosArray.forEach(todo => renderTodo(todo.id, todo));
                 }
             });
         }
 
-        // 數據遷移：將舊的週間任務移至「魔法研究」
         async function migrateOldTodos() {
             if (!window.currentUser) return;
-            
             const userId = window.currentUser.uid;
             const migrationFlagRef = ref(database, `users/${userId}/migrated`);
             const migrationSnapshot = await get(migrationFlagRef);
-            
-            // 如果已經遷移過，就不再執行
             if (migrationSnapshot.exists()) {
-                // 但仍然執行清理無效 section 的操作（每次都執行）
                 await cleanInvalidSections();
                 return;
             }
-
             const todosRef = ref(database, `users/${userId}/todos`);
             const snapshot = await get(todosRef);
-
             if (!snapshot.exists()) {
-                // 即使沒有資料，也標記為已遷移
                 await set(migrationFlagRef, true);
                 return;
             }
-
             const data = snapshot.val();
             const updatePromises = [];
-
-            // 舊的 section 名稱
-            const oldSections = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday',
-                'next_monday', 'next_tuesday', 'next_wednesday', 'next_thursday', 'next_friday'];
-
+            const oldSections = ['monday','tuesday','wednesday','thursday','friday','next_monday','next_tuesday','next_wednesday','next_thursday','next_friday'];
             Object.keys(data).forEach(id => {
-                const todo = data[id];
-                if (oldSections.includes(todo.section)) {
-                    const todoRef = ref(database, `users/${userId}/todos/${id}`);
-                    updatePromises.push(set(todoRef, {
-                        ...todo,
-                        section: 'focus' // 移至魔法研究
-                    }));
+                if (oldSections.includes(data[id].section)) {
+                    updatePromises.push(set(ref(database, `users/${userId}/todos/${id}`), { ...data[id], section: 'focus' }));
                 }
             });
-
-            if (updatePromises.length > 0) {
-                await Promise.all(updatePromises);
-                console.log(`已將 ${updatePromises.length} 個舊任務移至魔法研究區塊`);
-            }
-
-            // 標記為已遷移
+            if (updatePromises.length > 0) await Promise.all(updatePromises);
             await set(migrationFlagRef, true);
-            
-            // 清理無效的 section
             await cleanInvalidSections();
         }
 
-        // 清理無效的 section（每次載入都執行）
         async function cleanInvalidSections() {
             if (!window.currentUser) return;
-            
             const userId = window.currentUser.uid;
-            const todosRef = ref(database, `users/${userId}/todos`);
-            const snapshot = await get(todosRef);
-
+            const snapshot = await get(ref(database, `users/${userId}/todos`));
             if (!snapshot.exists()) return;
-
             const data = snapshot.val();
+            const invalidSections = ['prophet','weekly','nextweek'];
             const updatePromises = [];
-
-            // 無效的 section 名稱（包括 prophet, weekly, nextweek 等）
-            const invalidSections = ['prophet', 'weekly', 'nextweek'];
-
             Object.keys(data).forEach(id => {
-                const todo = data[id];
-                if (invalidSections.includes(todo.section)) {
-                    console.log(`🔧 修復無效的任務: "${todo.text}" (section: ${todo.section} → focus)`);
-                    const todoRef = ref(database, `users/${userId}/todos/${id}`);
-                    updatePromises.push(set(todoRef, {
-                        ...todo,
-                        section: 'focus' // 移至魔法研究
-                    }));
+                if (invalidSections.includes(data[id].section)) {
+                    updatePromises.push(set(ref(database, `users/${userId}/todos/${id}`), { ...data[id], section: 'focus' }));
                 }
             });
-
-            if (updatePromises.length > 0) {
-                await Promise.all(updatePromises);
-                console.log(`✅ 已修復 ${updatePromises.length} 個無效的任務，已移至魔法研究區塊`);
-            }
+            if (updatePromises.length > 0) await Promise.all(updatePromises);
         }
 
-        // 移動過期任務到今天
         async function moveExpiredTasksToToday(todosArray) {
-            if (!window.currentUser) return;
-            if (window.workingDays.length === 0) return;
-
+            if (!window.currentUser || window.workingDays.length === 0) return;
             const userId = window.currentUser.uid;
             const today = formatDate(window.workingDays[0]);
+            const todayDate = new Date(today);
             const updatePromises = [];
-
             todosArray.forEach(todo => {
-                // 檢查是否為日期格式的 section (YYYY-MM-DD)
                 if (/^\d{4}-\d{2}-\d{2}$/.test(todo.section)) {
-                    const todoDate = new Date(todo.section);
-                    const todayDate = new Date(today);
-                    
-                    // 如果任務日期早於今天，移至今天
-                    if (todoDate < todayDate) {
-                        const todoRef = ref(database, `users/${userId}/todos/${todo.id}`);
-                        updatePromises.push(set(todoRef, {
-                            ...todo,
-                            section: today
-                        }));
+                    if (new Date(todo.section) < todayDate) {
+                        updatePromises.push(set(ref(database, `users/${userId}/todos/${todo.id}`), { ...todo, section: today }));
                     }
                 }
             });
-
-            if (updatePromises.length > 0) {
-                await Promise.all(updatePromises);
-                console.log(`已將 ${updatePromises.length} 個過期任務移至今天`);
-            }
+            if (updatePromises.length > 0) await Promise.all(updatePromises);
         }
 
-        // 舊的日期選擇功能已移除，因為現在使用自動日期顯示
-
-        // 渲染待辦事項
+        // ── Render ──
         function renderTodo(id, todo) {
-            // 容器可能是日期格式(YYYY-MM-DD)或其他section名稱(others, focus)
             const container = document.getElementById(todo.section);
-            if (!container) {
-                // 如果找不到容器，可能是過期的日期，跳過渲染
-                console.log(`找不到容器: ${todo.section}`);
-                return;
-            }
+            if (!container) return;
 
             const todoDiv = document.createElement('div');
-            todoDiv.className = `todo-item ${todo.important ? 'important' : ''}`;
+            todoDiv.className = `todo-item${todo.important ? ' important' : ''}`;
             todoDiv.draggable = true;
             todoDiv.dataset.id = id;
 
             todoDiv.innerHTML = `
-                <span class="drag-handle">⋮⋮</span>
+                <span class="drag-handle" title="拖曳">⋮⋮</span>
+                <span class="todo-checkbox${todo.important ? ' important' : ''}" onclick="toggleImportant('${id}')" title="標記重要">
+                    ${todo.important ? '✦' : ''}
+                </span>
                 <div class="todo-content">
                     <div class="todo-text">${linkifyUrls(todo.text)}</div>
-                    ${todo.note ? `<div class="note-text">📝 ${linkifyUrls(todo.note)}</div>` : ''}
+                    ${todo.note ? `<div class="note-text">${linkifyUrls(todo.note)}</div>` : ''}
                 </div>
                 <div class="todo-actions">
-                    <button class="action-btn" onclick="showEditModal('${id}')" title="編輯">⋯</button>
-                    <button class="action-btn" onclick="toggleImportant('${id}')" title="標記重要">!</button>
-                    <button class="action-btn" onclick="deleteTodo('${id}')" title="刪除">×</button>
+                    <button class="action-btn" onclick="showEditModal('${id}')" title="編輯">✎</button>
+                    <button class="action-btn danger" onclick="deleteTodo('${id}')" title="消除 (Evanesco)">✕</button>
                 </div>
             `;
 
-            // 拖曳事件
             todoDiv.addEventListener('dragstart', handleDragStart);
             todoDiv.addEventListener('dragend', handleDragEnd);
-
             container.appendChild(todoDiv);
         }
 
-        // 顯示新增 Modal
+        // ── Add Modal ──
         window.showAddModal = function (section) {
             window.currentAddSection = section;
             window.selectedDay = null;
@@ -1218,28 +939,20 @@
             if (section === 'prophet') {
                 dayButtonGroup.classList.remove('hidden');
                 dayButtonGroup.innerHTML = '';
-
-                // 顯示最近5個工作天
-                const first5Days = window.workingDays.slice(0, 5);
-                first5Days.forEach((date, index) => {
+                window.workingDays.slice(0, 5).forEach((date) => {
                     const dateStr = formatDate(date);
                     const displayStr = formatDateDisplay(date);
-                    
                     const button = document.createElement('button');
                     button.className = 'day-button';
                     button.dataset.day = dateStr;
                     button.textContent = displayStr;
-                    
                     button.addEventListener('click', function () {
                         dayButtonGroup.querySelectorAll('.day-button').forEach(b => b.classList.remove('selected'));
                         this.classList.add('selected');
                         window.selectedDay = this.dataset.day;
                     });
-                    
                     dayButtonGroup.appendChild(button);
                 });
-
-                // 預設選擇第一天
                 dayButtonGroup.querySelector('.day-button').click();
             } else {
                 dayButtonGroup.classList.add('hidden');
@@ -1250,61 +963,41 @@
             modal.classList.add('active');
         };
 
-        // 關閉新增 Modal
         window.closeAddModal = function () {
             document.getElementById('addModal').classList.remove('active');
         };
 
-        // 新增待辦事項
         window.addTodo = async function () {
             const text = document.getElementById('newTodoText').value.trim();
             if (!text) return;
-
             const note = document.getElementById('newTodoNote').value.trim();
             let section = window.currentAddSection;
-
-            if (section === 'prophet') {
-                section = window.selectedDay;
-            }
-
+            if (section === 'prophet') section = window.selectedDay;
             const userId = window.currentUser.uid;
             const todoId = Date.now().toString();
-            const todoRef = ref(database, `users/${userId}/todos/${todoId}`);
-
-            await set(todoRef, {
-                text: text,
-                section: section,
-                important: false,
-                note: note,
-                createdAt: Date.now(),
-                order: Date.now()
+            await set(ref(database, `users/${userId}/todos/${todoId}`), {
+                text, section, important: false, note,
+                createdAt: Date.now(), order: Date.now()
             });
-
             closeAddModal();
         };
 
-        // 標記重要
+        // ── Important ──
         window.toggleImportant = async function (id) {
             const userId = window.currentUser.uid;
             const todoRef = ref(database, `users/${userId}/todos/${id}`);
             const snapshot = await get(todoRef);
-
             if (snapshot.exists()) {
                 const todo = snapshot.val();
-                await set(todoRef, {
-                    ...todo,
-                    important: !todo.important
-                });
+                await set(todoRef, { ...todo, important: !todo.important });
             }
         };
 
-        // 顯示編輯待辦事項 Modal
+        // ── Edit Modal ──
         window.showEditModal = async function (id) {
             window.currentEditingTodoId = id;
             const userId = window.currentUser.uid;
-            const todoRef = ref(database, `users/${userId}/todos/${id}`);
-            const snapshot = await get(todoRef);
-
+            const snapshot = await get(ref(database, `users/${userId}/todos/${id}`));
             if (snapshot.exists()) {
                 const todo = snapshot.val();
                 document.getElementById('editTodoText').value = todo.text || '';
@@ -1313,48 +1006,32 @@
             }
         };
 
-        // 關閉編輯待辦事項 Modal
         window.closeEditModal = function () {
             document.getElementById('editModal').classList.remove('active');
             window.currentEditingTodoId = null;
         };
 
-        // 儲存編輯的待辦事項
         window.saveEditTodo = async function () {
             const newText = document.getElementById('editTodoText').value.trim();
-            if (!newText) {
-                alert('待辦事項不能為空');
-                return;
-            }
-
+            if (!newText) { alert('待辦事項不能為空'); return; }
             const newNote = document.getElementById('editTodoNote').value.trim();
             const id = window.currentEditingTodoId;
             const userId = window.currentUser.uid;
             const todoRef = ref(database, `users/${userId}/todos/${id}`);
             const snapshot = await get(todoRef);
-
             if (snapshot.exists()) {
-                const todo = snapshot.val();
-                await set(todoRef, {
-                    ...todo,
-                    text: newText,
-                    note: newNote
-                });
+                await set(todoRef, { ...snapshot.val(), text: newText, note: newNote });
             }
-
             closeEditModal();
         };
 
-        // 刪除待辦事項
+        // ── Delete ──
         window.deleteTodo = async function (id) {
             if (!confirm('是否確定刪除？')) return;
-
-            const userId = window.currentUser.uid;
-            const todoRef = ref(database, `users/${userId}/todos/${id}`);
-            await remove(todoRef);
+            await remove(ref(database, `users/${window.currentUser.uid}/todos/${id}`));
         };
 
-        // 拖曳處理
+        // ── Drag & Drop ──
         let draggedElement = null;
         let afterElement = null;
         let dropSuccessful = false;
@@ -1364,11 +1041,8 @@
         function handleDragStart(e) {
             draggedElement = this;
             dropSuccessful = false;
-            
-            // 記錄原始位置
             originalParent = this.parentElement;
             originalNextSibling = this.nextElementSibling;
-            
             this.classList.add('dragging');
             e.dataTransfer.effectAllowed = 'move';
             e.dataTransfer.setData('text/html', this.innerHTML);
@@ -1376,297 +1050,152 @@
 
         function handleDragEnd(e) {
             this.classList.remove('dragging');
-            document.querySelectorAll('.todo-item').forEach(item => {
-                item.classList.remove('drag-after');
-            });
-            
-            // 如果拖曳沒有成功放置，恢復元素到原始位置
+            document.querySelectorAll('.todo-item').forEach(item => item.classList.remove('drag-after'));
             if (!dropSuccessful) {
-                console.log('拖曳未完成，恢復任務到原位');
-                
-                // 保存元素引用，因為後面會將 draggedElement 設為 null
                 const elementToRestore = draggedElement;
                 const targetParent = originalParent;
                 const targetNextSibling = originalNextSibling;
-                
                 if (targetParent && elementToRestore) {
-                    // 使用 setTimeout 確保在瀏覽器完成拖曳操作後再恢復
                     setTimeout(() => {
-                        // 檢查元素是否還在 DOM 中
                         if (!elementToRestore.parentElement) {
-                            // 元素已從 DOM 中移除，需要恢復
-                            if (targetNextSibling && targetNextSibling.parentElement === targetParent) {
-                                targetParent.insertBefore(elementToRestore, targetNextSibling);
-                            } else {
-                                targetParent.appendChild(elementToRestore);
-                            }
-                            console.log('✅ 任務已恢復到原始位置（從 DOM 外）');
+                            targetNextSibling && targetNextSibling.parentElement === targetParent
+                                ? targetParent.insertBefore(elementToRestore, targetNextSibling)
+                                : targetParent.appendChild(elementToRestore);
                         } else if (elementToRestore.parentElement !== targetParent) {
-                            // 元素在錯誤的位置，移回原位
-                            if (targetNextSibling && targetNextSibling.parentElement === targetParent) {
-                                targetParent.insertBefore(elementToRestore, targetNextSibling);
-                            } else {
-                                targetParent.appendChild(elementToRestore);
-                            }
-                            console.log('✅ 任務已從錯誤位置恢復到原位');
-                        } else {
-                            console.log('✅ 任務已在正確位置');
+                            targetNextSibling && targetNextSibling.parentElement === targetParent
+                                ? targetParent.insertBefore(elementToRestore, targetNextSibling)
+                                : targetParent.appendChild(elementToRestore);
                         }
                     }, 0);
                 }
             }
-            
-            // 重置狀態
-            draggedElement = null;
-            originalParent = null;
-            originalNextSibling = null;
-            dropSuccessful = false;
+            draggedElement = null; originalParent = null; originalNextSibling = null; dropSuccessful = false;
         }
 
-        // 為所有可放置區域添加拖曳事件
         function initializeDragAndDrop() {
-            // 移除舊的事件監聽器（如果有的話）
             const dropZones = document.querySelectorAll('.todo-list, .day-column, .section');
-
             dropZones.forEach(zone => {
-                // 移除舊的監聽器
                 zone.removeEventListener('dragover', handleDragOver);
                 zone.removeEventListener('drop', handleDrop);
                 zone.removeEventListener('dragleave', handleDragLeave);
-
-                // 添加新的監聽器
                 zone.addEventListener('dragover', handleDragOver);
                 zone.addEventListener('drop', handleDrop);
                 zone.addEventListener('dragleave', handleDragLeave);
             });
-
-            // 添加全局事件處理器，防止拖曳到無效區域時的預設行為
             document.body.removeEventListener('dragover', handleGlobalDragOver);
             document.body.removeEventListener('drop', handleGlobalDrop);
             document.body.addEventListener('dragover', handleGlobalDragOver);
             document.body.addEventListener('drop', handleGlobalDrop);
         }
 
-        // 全局 dragover 處理器 - 防止預設行為
-        function handleGlobalDragOver(e) {
-            // 允許拖曳到任何地方（但不會觸發 drop）
-            e.preventDefault();
-            e.dataTransfer.dropEffect = 'none';
-        }
+        function handleGlobalDragOver(e) { e.preventDefault(); e.dataTransfer.dropEffect = 'none'; }
+        function handleGlobalDrop(e) { e.preventDefault(); e.stopPropagation(); }
 
-        // 全局 drop 處理器 - 當拖曳到非 drop zone 時
-        function handleGlobalDrop(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            // 不設置 dropSuccessful = true
-            // 讓 handleDragEnd 處理恢復邏輯
-            console.log('拖曳到無效區域，任務將恢復到原位');
-        }
-
-        // 初始化時綁定事件
-        document.addEventListener('DOMContentLoaded', () => {
-            initializeDragAndDrop();
-        });
+        document.addEventListener('DOMContentLoaded', () => { initializeDragAndDrop(); });
 
         function getDragAfterElement(container, y) {
             const draggableElements = [...container.querySelectorAll('.todo-item:not(.dragging)')];
-
             return draggableElements.reduce((closest, child) => {
                 const box = child.getBoundingClientRect();
                 const offset = y - box.top - box.height / 2;
-
-                if (offset < 0 && offset > closest.offset) {
-                    return { offset: offset, element: child };
-                } else {
-                    return closest;
-                }
+                return offset < 0 && offset > closest.offset ? { offset, element: child } : closest;
             }, { offset: Number.NEGATIVE_INFINITY }).element;
         }
 
         function handleDragOver(e) {
-            e.preventDefault();
-            e.stopPropagation(); // 阻止事件冒泡到全局處理器
+            e.preventDefault(); e.stopPropagation();
             e.dataTransfer.dropEffect = 'move';
-
             let container;
-            if (this.classList.contains('day-column')) {
-                container = this.querySelector('.todo-list');
-            } else if (this.classList.contains('section')) {
-                container = this.querySelector('.todo-list');
-            } else if (this.classList.contains('todo-list')) {
-                container = this;
-            }
-
+            if (this.classList.contains('day-column')) container = this.querySelector('.todo-list');
+            else if (this.classList.contains('section')) container = this.querySelector('.todo-list');
+            else if (this.classList.contains('todo-list')) container = this;
             if (container) {
                 afterElement = getDragAfterElement(container, e.clientY);
-
-                // 移除所有舊的標記
-                document.querySelectorAll('.todo-item').forEach(item => {
-                    item.classList.remove('drag-after');
-                });
-
-                // 添加新標記
-                if (afterElement) {
-                    afterElement.classList.add('drag-after');
-                }
+                document.querySelectorAll('.todo-item').forEach(item => item.classList.remove('drag-after'));
+                if (afterElement) afterElement.classList.add('drag-after');
             }
-
-            if (this.classList.contains('day-column')) {
-                this.classList.add('drag-over');
-            }
-
+            if (this.classList.contains('day-column')) this.classList.add('drag-over');
             return false;
         }
 
         function handleDragLeave(e) {
-            if (this.classList.contains('day-column')) {
-                this.classList.remove('drag-over');
-            }
+            if (this.classList.contains('day-column')) this.classList.remove('drag-over');
         }
 
         async function handleDrop(e) {
-            e.stopPropagation();
-            e.preventDefault();
-
-            if (this.classList.contains('day-column')) {
-                this.classList.remove('drag-over');
-            }
-
+            e.stopPropagation(); e.preventDefault();
+            if (this.classList.contains('day-column')) this.classList.remove('drag-over');
             if (!draggedElement) return;
 
             const todoId = draggedElement.dataset.id;
-            let newSection;
-            let container;
+            let newSection, container;
 
             if (this.classList.contains('day-column')) {
-                newSection = this.dataset.day;
-                container = this.querySelector('.todo-list');
+                newSection = this.dataset.day; container = this.querySelector('.todo-list');
             } else if (this.classList.contains('todo-list')) {
-                newSection = this.id;
-                container = this;
+                newSection = this.id; container = this;
             } else if (this.classList.contains('section')) {
-                // 處理拖曳到 .section 元素（others, focus）
-                newSection = this.dataset.section;
-                container = this.querySelector('.todo-list');
-                
-                // 特殊處理：預言家日報區塊不應該直接拖曳到 section 層級
-                // 必須拖曳到具體的日期欄位（day-column）
-                if (newSection === 'prophet') {
-                    console.log('⚠️ 請將任務拖曳到具體的日期欄位，而不是區塊邊緣');
-                    newSection = null;
-                    container = null;
-                }
+                newSection = this.dataset.section; container = this.querySelector('.todo-list');
+                if (newSection === 'prophet') { newSection = null; container = null; }
             }
 
             if (newSection && container) {
-                // 只有在找到有效的目標位置時才標記為成功
                 dropSuccessful = true;
                 const userId = window.currentUser.uid;
                 const todoRef = ref(database, `users/${userId}/todos/${todoId}`);
                 const snapshot = await get(todoRef);
-
                 if (snapshot.exists()) {
                     const todo = snapshot.val();
-
-                    // 計算新的 order 值
                     let newOrder;
                     if (afterElement) {
                         const afterId = afterElement.dataset.id;
-                        const afterTodoRef = ref(database, `users/${userId}/todos/${afterId}`);
-                        const afterSnapshot = await get(afterTodoRef);
-
+                        const afterSnapshot = await get(ref(database, `users/${userId}/todos/${afterId}`));
                         if (afterSnapshot.exists()) {
                             const afterTodo = afterSnapshot.val();
-                            // 獲取前一個元素（排除正在拖曳的元素）
                             let beforeElement = afterElement.previousElementSibling;
-                            // 如果前一個元素是正在拖曳的元素，再往前找一個
-                            while (beforeElement && beforeElement === draggedElement) {
-                                beforeElement = beforeElement.previousElementSibling;
-                            }
-
+                            while (beforeElement && beforeElement === draggedElement) beforeElement = beforeElement.previousElementSibling;
                             if (beforeElement) {
-                                const beforeId = beforeElement.dataset.id;
-                                const beforeTodoRef = ref(database, `users/${userId}/todos/${beforeId}`);
-                                const beforeSnapshot = await get(beforeTodoRef);
+                                const beforeSnapshot = await get(ref(database, `users/${userId}/todos/${beforeElement.dataset.id}`));
                                 if (beforeSnapshot.exists()) {
-                                    const beforeTodo = beforeSnapshot.val();
-                                    // 確保 order 值存在，否則使用 createdAt 或當前時間
-                                    const beforeOrder = beforeTodo.order || beforeTodo.createdAt || Date.now();
+                                    const beforeOrder = beforeSnapshot.val().order || beforeSnapshot.val().createdAt || Date.now();
                                     const afterOrder = afterTodo.order || afterTodo.createdAt || Date.now();
                                     newOrder = (beforeOrder + afterOrder) / 2;
                                 } else {
-                                    const afterOrder = afterTodo.order || afterTodo.createdAt || Date.now();
-                                    newOrder = afterOrder - 1;
+                                    newOrder = (afterTodo.order || afterTodo.createdAt || Date.now()) - 1;
                                 }
                             } else {
-                                // 沒有前一個元素，放在 afterElement 之前
-                                const afterOrder = afterTodo.order || afterTodo.createdAt || Date.now();
-                                newOrder = afterOrder - 1;
+                                newOrder = (afterTodo.order || afterTodo.createdAt || Date.now()) - 1;
                             }
-                        } else {
-                            newOrder = Date.now();
-                        }
+                        } else { newOrder = Date.now(); }
                     } else {
-                        // 放在最後
                         const items = [...container.querySelectorAll('.todo-item:not(.dragging)')];
                         if (items.length > 0) {
-                            const lastItem = items[items.length - 1];
-                            const lastId = lastItem.dataset.id;
-                            const lastTodoRef = ref(database, `users/${userId}/todos/${lastId}`);
-                            const lastSnapshot = await get(lastTodoRef);
-                            if (lastSnapshot.exists()) {
-                                const lastTodo = lastSnapshot.val();
-                                // 確保 order 值存在
-                                const lastOrder = lastTodo.order || lastTodo.createdAt || Date.now();
-                                newOrder = lastOrder + 1;
-                            } else {
-                                newOrder = Date.now();
-                            }
-                        } else {
-                            newOrder = Date.now();
-                        }
+                            const lastSnapshot = await get(ref(database, `users/${userId}/todos/${items[items.length-1].dataset.id}`));
+                            newOrder = lastSnapshot.exists()
+                                ? (lastSnapshot.val().order || lastSnapshot.val().createdAt || Date.now()) + 1
+                                : Date.now();
+                        } else { newOrder = Date.now(); }
                     }
-
-                    await set(todoRef, {
-                        ...todo,
-                        section: newSection,
-                        order: newOrder
-                    });
+                    await set(todoRef, { ...todo, section: newSection, order: newOrder });
                 }
             }
-
-            // 清理標記
-            document.querySelectorAll('.todo-item').forEach(item => {
-                item.classList.remove('drag-after');
-            });
-
+            document.querySelectorAll('.todo-item').forEach(item => item.classList.remove('drag-after'));
             return false;
         }
 
-        // HTML 轉義函數
+        // ── Utilities ──
         function escapeHtml(text) {
             const div = document.createElement('div');
             div.textContent = text;
             return div.innerHTML;
         }
 
-        // 將文本中的 URL 轉換為超連結
         function linkifyUrls(text) {
-            // URL 正則表達式
             const urlRegex = /(https?:\/\/[^\s]+)/g;
-            // 先轉義 HTML
-            const escapedText = escapeHtml(text);
-            // 將 URL 替換為超連結
-            return escapedText.replace(urlRegex, function(url) {
-                return '<a href="' + url + '" target="_blank" style="color: #daa520; text-decoration: underline;">' + url + '</a>';
-            });
+            return escapeHtml(text).replace(urlRegex, url =>
+                `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`
+            );
         }
-
-        // 初始化拖曳功能
-        document.addEventListener('DOMContentLoaded', () => {
-            // 拖曳功能會在載入待辦事項時自動設置
-        });
     </script>
 </body>
 
