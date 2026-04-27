@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-TW" data-theme="spellbook">
+<html lang="zh-TW">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>疾疾，清單現身</title>
+    <title>疾疾，清單現身！</title>
     <link rel="icon"
         href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪄</text></svg>">
     <style>
@@ -98,32 +98,6 @@
             --dur-fast:120ms; --dur-base:220ms; --dur-slow:420ms;
         }
 
-        /* ── Dark / Spellbook overrides ── */
-        [data-theme="spellbook"] {
-            --bg:           var(--midnight-900);
-            --bg-elevated:  var(--midnight-800);
-            --bg-sunken:    #08071a;
-            --surface-ink:  var(--midnight-700);
-            --fg:           #f4ebd4;
-            --fg-2:         #d6c498;
-            --fg-3:         #a8966a;
-            --fg-4:         #6f6142;
-            --border:       rgba(214,196,152,.14);
-            --border-strong:rgba(214,196,152,.3);
-            --border-ink:   rgba(244,235,212,.05);
-            --accent:       var(--amethyst-400);
-            --accent-fg:    var(--midnight-900);
-            --accent-soft:  rgba(154,140,192,.2);
-            --gold-soft:    rgba(236,210,121,.16);
-            --cat-prophet-soft: rgba(154,140,192,.2);
-            --cat-trunk-soft:   rgba(217,165,134,.18);
-            --cat-study-soft:   rgba(168,184,148,.18);
-            --shadow-sm: 0 1px 2px rgba(0,0,0,.5);
-            --shadow-md: 0 4px 10px rgba(0,0,0,.45),0 12px 28px rgba(0,0,0,.35);
-            --shadow-lg: 0 12px 30px rgba(0,0,0,.55),0 28px 60px rgba(0,0,0,.4);
-            --shadow-ink:inset 0 0 0 1px rgba(244,235,212,.05);
-        }
-
         /* ── Reset ── */
         *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
 
@@ -136,14 +110,7 @@
             min-height: 100vh;
             -webkit-font-smoothing: antialiased;
             text-rendering: optimizeLegibility;
-            transition: background var(--dur-slow) var(--ease-stand), color var(--dur-slow) var(--ease-stand);
             overflow-x: hidden;
-        }
-        [data-theme="spellbook"] body {
-            background-image:
-                radial-gradient(ellipse at 15% 45%, rgba(111,95,149,.10) 0%, transparent 55%),
-                radial-gradient(ellipse at 85% 70%, rgba(212,175,55,.07) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 5%,  rgba(154,140,192,.06) 0%, transparent 40%);
         }
 
         /* ───────────── NAV ───────────── */
@@ -153,10 +120,8 @@
             padding: 0 var(--sp-7);
             display: flex; align-items: center; justify-content: space-between;
             border-bottom: 1px solid var(--border);
-            transition: background var(--dur-slow) var(--ease-stand);
+            background: rgba(250,245,234,.80); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
         }
-        [data-theme="spellbook"] .nav { background: rgba(11,10,31,.78); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
-        [data-theme="parchment"] .nav { background: rgba(250,245,234,.80); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); }
 
         .nav-left  { display:flex; align-items:center; gap:var(--sp-3); }
         .nav-right { display:flex; align-items:center; gap:var(--sp-2); }
@@ -176,16 +141,6 @@
             letter-spacing: var(--ls-xwide); color: var(--gold-600);
             text-transform: uppercase; margin-top:2px;
         }
-        [data-theme="spellbook"] .nav-tagline { color: var(--gold-400); }
-
-        .btn-theme {
-            width:40px; height:40px; border-radius:50%;
-            border:1px solid var(--border-strong); background:var(--surface-ink);
-            color:var(--fg); cursor:pointer; font-size:16px;
-            display:flex; align-items:center; justify-content:center;
-            transition: all var(--dur-base) var(--ease-stand);
-        }
-        .btn-theme:hover { box-shadow: var(--glow-amethyst); }
 
         .nav-user {
             display:flex; align-items:center; gap:var(--sp-2);
@@ -239,7 +194,6 @@
             letter-spacing:var(--ls-xwide); color:var(--gold-600);
             text-transform:uppercase; margin-top:4px;
         }
-        [data-theme="spellbook"] .login-brand-sub { color:var(--gold-400); }
         .login-desc { font-size:var(--fs-sm); color:var(--fg-3); text-align:center; }
         .btn-google {
             display:flex; align-items:center; justify-content:center; gap:var(--sp-2);
@@ -415,6 +369,8 @@
         }
         .action-btn:hover { background:var(--accent-soft); color:var(--accent); }
         .action-btn.danger:hover { background:rgba(154,79,90,.12); color:var(--blood-500); }
+        .action-btn.important { color:var(--gold-600); background:var(--gold-soft); font-weight:700; }
+        .action-btn.important:hover { background:rgba(212,175,55,.25); color:var(--gold-700); }
 
         /* ───────────── MODAL ───────────── */
         .modal {
@@ -440,7 +396,6 @@
             letter-spacing:var(--ls-xwide); font-size:10px;
             color:var(--gold-700); margin-bottom:var(--sp-1); text-transform:uppercase;
         }
-        [data-theme="spellbook"] .field-label { color:var(--gold-400); }
         .modal-field { display:flex; flex-direction:column; }
         .modal-input, .modal-textarea {
             width:100%; box-sizing:border-box;
@@ -515,7 +470,7 @@
         <div class="login-card">
             <div class="login-orb-wrap">🔮</div>
             <div class="login-brand">
-                <div class="login-brand-title">ACCIO</div>
+                <div class="login-brand-title">疾疾，清單現身！</div>
                 <div class="login-brand-sub">魔法待辦 2.0</div>
             </div>
             <p class="login-desc">使用 Google 帳號施展登入魔法</p>
@@ -540,12 +495,11 @@
             <div class="nav-left">
                 <div class="nav-orb">🔮</div>
                 <div>
-                    <div class="nav-brand">ACCIO</div>
+                    <div class="nav-brand">疾疾，清單現身！</div>
                     <div class="nav-tagline">魔法待辦 2.0</div>
                 </div>
             </div>
             <div class="nav-right">
-                <button class="btn-theme" id="themeToggle" onclick="toggleTheme()" title="切換主題">☀️</button>
                 <div class="nav-user">
                     <div class="nav-avatar" id="navAvatar">魔</div>
                     <span class="nav-username" id="navUsername">法師</span>
@@ -676,14 +630,6 @@
         window.currentEditingTodoId = null;
         window.workingDays = [];
         window.expiredTasksMoved = false;
-
-        // ── Theme toggle ──
-        window.toggleTheme = function () {
-            const html = document.documentElement;
-            const isSpellbook = html.getAttribute('data-theme') === 'spellbook';
-            html.setAttribute('data-theme', isSpellbook ? 'parchment' : 'spellbook');
-            document.getElementById('themeToggle').textContent = isSpellbook ? '🌙' : '☀️';
-        };
 
         // ── Auth ──
         window.login = async function () {
@@ -911,7 +857,7 @@
 
             todoDiv.innerHTML = `
                 <span class="drag-handle" title="拖曳">⋮⋮</span>
-                <span class="todo-checkbox${todo.important ? ' important' : ''}" onclick="toggleImportant('${id}')" title="標記重要">
+                <span class="todo-checkbox${todo.important ? ' important' : ''}">
                     ${todo.important ? '✦' : ''}
                 </span>
                 <div class="todo-content">
@@ -919,6 +865,7 @@
                     ${todo.note ? `<div class="note-text">${linkifyUrls(todo.note)}</div>` : ''}
                 </div>
                 <div class="todo-actions">
+                    <button class="action-btn${todo.important ? ' important' : ''}" onclick="toggleImportant('${id}')" title="標記重要">!</button>
                     <button class="action-btn" onclick="showEditModal('${id}')" title="編輯">✎</button>
                     <button class="action-btn danger" onclick="deleteTodo('${id}')" title="消除 (Evanesco)">✕</button>
                 </div>
